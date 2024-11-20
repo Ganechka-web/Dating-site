@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block links %}
+  {% endblock %}
+  <title>{% block title %}{% endblock %}</title>
+  {% block style %}
+  {% endblock %}
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img
+        src="https://www.toppenoplast.ru/wp-content/uploads/serdtse-krasnoe.jpg"
+        alt=""
+      />
+      </div>
+      <h1 style="padding: 10px">Dating</h1>
+      {% if user.is_authenticated %}
+        <div class="navbar">
+          <a href="index.html" {% if section == 'members' %}class="selected"{% endif %}>
+            Members
+          </a>
+          <a href="profile.html" {% if section == 'profile' %}class="selected"{% endif %}>
+            Profile
+          </a>
+          <a href="chats.html" {% if section == 'chats' %}class="selected"{% endif %}>
+            Chats
+          </a>
+        </div>
+      {% endif %}
+  </header>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
