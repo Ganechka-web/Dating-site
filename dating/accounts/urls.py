@@ -10,7 +10,10 @@ urlpatterns = [
     path('login/',
          views.DatingUserLoginView.as_view(),
          name='login'),
-    # path('logout/',
-    #      views,
-    #      name='logout')
+    path('logout/',
+         views.DatingUserLogoutView.as_view(),
+         name='logout'),
+    path('<int:pk>/<str:username>/',
+         views.DatingUserDatailView.as_view(),
+         name='user_detail')
 ]

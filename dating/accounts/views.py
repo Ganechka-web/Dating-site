@@ -1,11 +1,17 @@
+from django.urls import reverse
 from django.views.generic.base import TemplateResponseMixin
-from django.contrib.auth import authenticate, login
+from django.views.generic import DetailView
+from django.contrib.auth import authenticate, login, \
+    get_user_model, logout
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views import View
 
 from .forms import DatingUserCreationForm, \
                     DatingUserLoginForm
+
+
+DatingUser = get_user_model()
 
 
 class DatingUserRegistrationView(View, TemplateResponseMixin):
@@ -49,7 +55,10 @@ class DatingUserLoginView(View, TemplateResponseMixin):
             if current_user:
                 login(request, current_user)
 
-                return HttpResponse('Done')
+                return redirect('user_detail',
+                                current_user.id,
+                                current_user.username)
+
             else:
                 form.add_error('password',
                                'Your username or password didn`t match')
@@ -57,3 +66,19 @@ class DatingUserLoginView(View, TemplateResponseMixin):
         return self.render_to_response({'form': form})
 
 
+class DatingUserLogoutView(View):
+    def post(self, request):
+        logout(request)
+
+        return redirect('login')
+
+
+class DatingUserDatailView(DetailView):
+    template_name = 'accounts/dating_user/profile.html'
+    model = DatingUser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'profile'
+
+        return context

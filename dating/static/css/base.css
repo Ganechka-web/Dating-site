@@ -84,6 +84,25 @@ main {
   object-fit: cover;
 }
 
+/* Profile */
+
+.profile-actions-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.profile-action-button {
+  margin: 10px;
+  color: white;
+  border: none;
+  background-color: rgb(247, 137, 232);
+}
+
+.profile-action-button:hover {
+  color: black;
+}
+
 /* Chats */
 
 .chats-container {

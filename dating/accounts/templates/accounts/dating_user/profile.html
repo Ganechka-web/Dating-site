@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Your profile{% endblock %}
+
+{% block content %}
+<div class="container p-5">
+        <div class="row rom-cols-md-6">
+          <div class="col">
+            <div class="profile-img-container">
+              <img src="{% if object.image %}{{ object.image.url }}{% else %}
+                        {% static 'img/default-avatar.jpg' %}{% endif %}"
+                   alt="User avatar" />
+            </div>
+          </div>
+          <div class="col">
+            <h1 class="text-center">{{ object.username }}</h1>
+            <hr />
+            <div class="row">
+              <div class="col-6">
+                <h4 class="text-center">
+                  Gender -
+                  <span class="badge bg-light text-dark">
+                    {% if object.gender %}
+                      {{ object.gender }}
+                    {% else %}
+                      Unknown
+                    {% endif %}
+                  </span>
+                </h4>
+                <h4 class="text-center">
+                  Age - <span class="badge bg-light text-dark">{{ object.get_user_age }}</span>
+                </h4>
+                <h4 class="text-center">
+                  City -
+                  <span class="badge bg-light text-dark">
+                    {% if object.city %}
+                      {{ object.city|capfirst }}
+                    {% else %}
+                      Unknown
+                    {% endif %}
+                  </span>
+                </h4>
+              </div>
+              <div class="col-6">
+                <h3 class="text-center">Interests</h3>
+                {% for interest in object.interests.all %}
+                  <span class="badge bg-light text-dark">{{ interest.name }}</span>
+                {% empty %}
+                  <h6 class="text-center">Unknown</h6>
+                {% endfor %}
+              </div>
+              <div class="col-12">
+                <div class="profile-actions-container">
+                  <button class="profile-action-button">Add interests</button>
+                  <button class="profile-action-button">Add information</button>
+                  <form action="{% url 'logout' %}" method="post">{% csrf_token %}
+                    <button class="profile-action-button" type="submit">Log-out</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% if object.description %}
+              {{ object.description }}
+            {% else %}
+              Unknown
+            {% endif %}
+          </div>
+        </div>
+      </div>
+{% endblock %}
