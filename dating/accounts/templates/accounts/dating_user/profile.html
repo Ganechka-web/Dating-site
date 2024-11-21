@@ -52,8 +52,12 @@
               </div>
               <div class="col-12">
                 <div class="profile-actions-container">
-                  <a href="{% url 'update_user_interests' %}" class="profile-action-button">Add interests</a>
-                  <a class="profile-action-button">Add information</a>
+                  <a href="{% url 'update_user_interests' %}" class="profile-action-button">
+                    Add interests
+                  </a>
+                  <a href="{% url 'add_additional_user_info' %}" class="profile-action-button">
+                    Add information
+                  </a>
                   <form action="{% url 'logout' %}" method="post">{% csrf_token %}
                     <a class="profile-action-button" type="submit">Log-out</a>
                   </form>

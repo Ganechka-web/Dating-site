@@ -18,5 +18,8 @@ urlpatterns = [
          name='user_detail'),
     path('update-interests/',
          views.DatingUserUpdateInterestsView.as_view(),
-         name='update_user_interests')
+         name='update_user_interests'),
+    path('add-additional-info/',
+         views.DatingUserUpdateAdditionalInfoView.as_view(),
+         name='add_additional_user_info')
 ]

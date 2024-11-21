@@ -1,5 +1,3 @@
-from random import choices
-
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic import DetailView
 from django.contrib.auth import authenticate, login, \
@@ -9,7 +7,8 @@ from django.views import View
 
 from .forms import (DatingUserCreationForm,
                     DatingUserLoginForm,
-                    DatingUserUpdateInterestsForm)
+                    DatingUserUpdateInterestsForm,
+                    DatingUserUpdateAdditionalInfoForm)
 
 
 DatingUser = get_user_model()
@@ -105,3 +104,22 @@ class DatingUserUpdateInterestsView(View, TemplateResponseMixin):
         return self.render_to_response({'form': form, 'choices': choices})
 
 
+class DatingUserUpdateAdditionalInfoView(View, TemplateResponseMixin):
+    template_name = 'accounts/dating_user/additional_info_form.html'
+
+    def get(self, request):
+        form = DatingUserUpdateAdditionalInfoForm(
+                   instance=request.user)
+
+        return self.render_to_response({'form': form})
+
+    def post(self, request):
+        form = DatingUserUpdateAdditionalInfoForm(
+                   instance=request.user,
+                   data=request.POST,
+                   files=request.FILES)
+        if form.is_valid():
+            form.save()
+
+            return redirect('user_detail', request.user.pk)
+        return self.render_to_response({'form': form})

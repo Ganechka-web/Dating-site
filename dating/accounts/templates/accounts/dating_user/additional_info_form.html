@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Add information{% endblock %}
+
+{% block content %}
+  <div class="form-container">
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          {% if field.name == 'image' %}
+            <label for="{{ field.auto_id }}">{{ field.name }}</label>
+            <input class="form-control form-control-lg" id="{{ field.auto_id }}" type="file">
+          {% elif field.name == 'gender' %}
+            <label for="{{ field.auto_id }}">{{ field.name }}</label>
+            <select class="form-select form-select-lg mb-3"
+                    name="{{ field.name }}"
+                    id="{{ field.auto_id }}">
+              {% for value, label in field.field.choices %}
+                <option value="{{ value }}"
+                        {% if value == field.value %}selected{% endif %}>
+                  {{ label }}
+                </option>
+              {% endfor %}
+            </select>
+          {% else %}
+            <label for="{{ field.auto_id }}">{{ field.name }}</label>
+            {{ field }}
+          {% endif %}
+        </div>
+        {% for error in field.errors %}
+          <div class="alert alert-danger" role="alert">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% endfor %}
+      <div>
+        <input type="submit" value="Add information">
+      </div>
+    </form>
+  </div>
+{% endblock %}

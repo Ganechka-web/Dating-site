@@ -54,3 +54,10 @@ class DatingUserUpdateInterestsForm(forms.ModelForm):
     class Meta:
         model = DatingUser
         fields = ('interests',)
+
+
+class DatingUserUpdateAdditionalInfoForm(forms.ModelForm):
+    class Meta:
+        model = DatingUser
+        fields = ('image', 'city', 'gender',
+                  'description')

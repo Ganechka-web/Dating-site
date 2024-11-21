@@ -16,6 +16,11 @@ class Interest(models.Model):
 
 
 class DatingUser(AbstractUser):
+    class Gender(models.TextChoices):
+        UNKNOWN = 'UNK', 'unknown'
+        MALE = 'ML', 'male'
+        FEMALE = 'FL', 'female'
+
     interests = models.ManyToManyField(Interest,
                                        related_name='users')
     image = models.ImageField(upload_to='media/accounts/',
@@ -29,10 +34,14 @@ class DatingUser(AbstractUser):
     description = models.TextField(blank=True,
                                    null=True)
     phone = PhoneField(blank=True, null=True)
+    gender = models.CharField(max_length=3,
+                              choices=Gender,
+                              default=Gender.UNKNOWN)
 
     class Meta(AbstractUser.Meta):
         indexes = [
-            models.Index(fields=['city'])
+            models.Index(fields=['city']),
+            models.Index(fields=['gender'])
         ]
 
     def get_user_age(self) -> int:
