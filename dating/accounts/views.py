@@ -1,14 +1,15 @@
-from django.urls import reverse
+from random import choices
+
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic import DetailView
 from django.contrib.auth import authenticate, login, \
-    get_user_model, logout
-from django.http import HttpResponse
+                                get_user_model, logout
 from django.shortcuts import redirect
 from django.views import View
 
-from .forms import DatingUserCreationForm, \
-                    DatingUserLoginForm
+from .forms import (DatingUserCreationForm,
+                    DatingUserLoginForm,
+                    DatingUserUpdateInterestsForm)
 
 
 DatingUser = get_user_model()
@@ -58,7 +59,6 @@ class DatingUserLoginView(View, TemplateResponseMixin):
                 return redirect('user_detail',
                                 current_user.id,
                                 current_user.username)
-
             else:
                 form.add_error('password',
                                'Your username or password didn`t match')
@@ -82,3 +82,26 @@ class DatingUserDatailView(DetailView):
         context['section'] = 'profile'
 
         return context
+
+
+class DatingUserUpdateInterestsView(View, TemplateResponseMixin):
+    template_name = 'accounts/dating_user/interests_form.html'
+
+    def get(self, request):
+        form = DatingUserUpdateInterestsForm(instance=request.user)
+        choices = form.fields['interests'].choices
+
+        return self.render_to_response({'form': form, 'choices': choices})
+
+    def post(self, request):
+        form = DatingUserUpdateInterestsForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('user_detail', request.user.id)
+        choices = form.fields['interests'].choices
+
+        return self.render_to_response({'form': form, 'choices': choices})
+
+

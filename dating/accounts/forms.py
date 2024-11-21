@@ -7,6 +7,8 @@ from django.contrib.auth.forms import UserCreationForm,\
 from django.core.exceptions import ValidationError
 from django import forms
 
+from .models import Interest
+
 
 DatingUser = get_user_model()
 
@@ -43,3 +45,12 @@ class DatingUserChangeForm(UserChangeForm):
 class DatingUserLoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
+
+
+class DatingUserUpdateInterestsForm(forms.ModelForm):
+    interests = forms.ModelMultipleChoiceField(
+                        queryset=Interest.objects.all())
+
+    class Meta:
+        model = DatingUser
+        fields = ('interests',)

@@ -13,7 +13,10 @@ urlpatterns = [
     path('logout/',
          views.DatingUserLogoutView.as_view(),
          name='logout'),
-    path('<int:pk>/<str:username>/',
+    path('<int:pk>/profile/',
          views.DatingUserDatailView.as_view(),
-         name='user_detail')
+         name='user_detail'),
+    path('update-interests/',
+         views.DatingUserUpdateInterestsView.as_view(),
+         name='update_user_interests')
 ]

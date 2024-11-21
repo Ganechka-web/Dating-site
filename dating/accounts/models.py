@@ -11,9 +11,12 @@ class Interest(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class DatingUser(AbstractUser):
-    Interests = models.ManyToManyField(Interest,
+    interests = models.ManyToManyField(Interest,
                                        related_name='users')
     image = models.ImageField(upload_to='media/accounts/',
                               null=True,
