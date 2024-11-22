@@ -102,7 +102,9 @@ class DatingUserUpdateInterestsView(View, TemplateResponseMixin):
         if form.is_valid():
             form.save()
 
-            return redirect('user_detail', request.user.id)
+            return redirect('user_detail',
+                            request.user.id,
+                            request.user.username)
         choices = form.fields['interests'].choices
 
         return self.render_to_response({'form': form, 'choices': choices})
@@ -126,5 +128,7 @@ class DatingUserUpdateAdditionalInfoView(View, TemplateResponseMixin):
         if form.is_valid():
             form.save()
 
-            return redirect('user_detail', request.user.pk)
+            return redirect('user_detail',
+                            request.user.pk,
+                            request.user.username)
         return self.render_to_response({'form': form})
