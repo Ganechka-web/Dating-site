@@ -1,5 +1,7 @@
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic import DetailView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, \
                                 get_user_model, logout
 from django.shortcuts import redirect
@@ -15,7 +17,7 @@ DatingUser = get_user_model()
 
 
 class DatingUserRegistrationView(View, TemplateResponseMixin):
-    template_name = 'accounts/registration/register.html'
+    template_name = 'registration/register.html'
 
     def get(self, reguest):
         form = DatingUserCreationForm()
@@ -37,7 +39,7 @@ class DatingUserRegistrationView(View, TemplateResponseMixin):
 
 
 class DatingUserLoginView(View, TemplateResponseMixin):
-    template_name = 'accounts/registration/login.html'
+    template_name = 'registration/login.html'
 
     def get(self, request):
         form = DatingUserLoginForm()
@@ -72,6 +74,7 @@ class DatingUserLogoutView(View):
         return redirect('login')
 
 
+@method_decorator(login_required, name='dispatch')
 class DatingUserDatailView(DetailView):
     template_name = 'accounts/dating_user/profile.html'
     model = DatingUser
@@ -83,6 +86,7 @@ class DatingUserDatailView(DetailView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class DatingUserUpdateInterestsView(View, TemplateResponseMixin):
     template_name = 'accounts/dating_user/interests_form.html'
 
@@ -104,6 +108,7 @@ class DatingUserUpdateInterestsView(View, TemplateResponseMixin):
         return self.render_to_response({'form': form, 'choices': choices})
 
 
+@method_decorator(login_required, name='dispatch')
 class DatingUserUpdateAdditionalInfoView(View, TemplateResponseMixin):
     template_name = 'accounts/dating_user/additional_info_form.html'
 

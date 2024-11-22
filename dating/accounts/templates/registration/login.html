@@ -22,5 +22,14 @@
       <input type="submit" value="Log-in">
     </div>
   </form>
+  <div>
+    <a href="{% url 'password_reset' %}" class="dating-link">Forgotten your password?</a>
+  </div>
+  <div>
+    <p>
+      Haven`t got any account yet?
+      <a href="{% url 'registration' %}" class="dating-link">Register now!</a>
+    </p>
+  </div>
 </div>
 {% endblock %}

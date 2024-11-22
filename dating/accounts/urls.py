@@ -1,4 +1,5 @@
-from django.urls import path
+import django.contrib.auth.views as auth_views
+from django.urls import path, include
 
 from . import views
 
@@ -13,7 +14,7 @@ urlpatterns = [
     path('logout/',
          views.DatingUserLogoutView.as_view(),
          name='logout'),
-    path('<int:pk>/profile/',
+    path('<int:pk>/<str:username>/profile/',
          views.DatingUserDatailView.as_view(),
          name='user_detail'),
     path('update-interests/',
@@ -21,5 +22,6 @@ urlpatterns = [
          name='update_user_interests'),
     path('add-additional-info/',
          views.DatingUserUpdateAdditionalInfoView.as_view(),
-         name='add_additional_user_info')
+         name='add_additional_user_info'),
+    path('', include('django.contrib.auth.urls'))
 ]

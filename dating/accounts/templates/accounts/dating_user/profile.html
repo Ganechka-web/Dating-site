@@ -58,8 +58,11 @@
                   <a href="{% url 'add_additional_user_info' %}" class="profile-action-button">
                     Add information
                   </a>
+                  <a href="{% url 'password_change' %}" class="profile-action-button">
+                    Change password
+                  </a>
                   <form action="{% url 'logout' %}" method="post">{% csrf_token %}
-                    <a class="profile-action-button" type="submit">Log-out</a>
+                    <button class="profile-action-button" type="submit">Log-out</button>
                   </form>
                 </div>
               </div>
