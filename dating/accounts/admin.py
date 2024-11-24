@@ -19,12 +19,12 @@ class DatingUserAdmin(UserAdmin):
     custom_fieldsets = ((
         'Additional information', {'fields': (
             'image', 'city', 'date_birth',
-            'phone', 'description'
+            'phone', 'gender', 'description'
         )}
     ),)
     add_form = DatingUserCreationForm
     form = DatingUserChangeForm
     model = DatingUser
-    list_display = ['username', 'city',
+    list_display = ['username', 'city', 'gender',
                     'date_birth', 'phone']
     fieldsets = UserAdmin.fieldsets + custom_fieldsets
