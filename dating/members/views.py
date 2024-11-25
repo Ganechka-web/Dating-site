@@ -14,12 +14,12 @@ class MembersListView(View, TemplateResponseMixin):
         form = FilterMembersForm(request.GET)
 
         if request.GET:
+            filters = {'is_active': True}
 
-            filters = {}
+            if request.GET.get('gender') and request.GET['gender'] != 'UNK':
+                filters['gender'] = request.GET['gender']
             if request.GET.get('interests'):
                 filters['interests__in'] = request.GET.getlist('interests')
-            if request.GET.get('gender'):
-                filters['gender'] = request.GET['gender']
             if request.GET.get('min_age'):
                 filters['age__gte'] = request.GET['min_age']
             if request.GET.get('max_age'):
@@ -28,9 +28,8 @@ class MembersListView(View, TemplateResponseMixin):
                 filters['city__in'] = request.GET.getlist('cities')
 
             members = DatingUser.objects.filter(**filters)
-            return self.render_to_response({'filter_form': form,
+            return self.render_to_response({'section': 'members',
+                                            'filter_form': form,
                                             'members': members})
-
-
-
-        return self.render_to_response({'filter_form': form})
+        return self.render_to_response({'section': 'members',
+                                        'filter_form': form})

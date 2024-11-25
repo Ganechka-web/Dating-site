@@ -23,10 +23,12 @@
       <h1 style="padding: 10px">Dating</h1>
       {% if user.is_authenticated %}
         <div class="navbar">
-          <a href="index.html" {% if section == 'members' %}class="selected"{% endif %}>
+          <a href="{% url 'members:members_list' %}"
+             {% if section == 'members' %}class="selected"{% endif %}>
             Members
           </a>
-          <a href="profile.html" {% if section == 'profile' %}class="selected"{% endif %}>
+          <a href="{% url 'user_detail' request.user.id request.user.username %}"
+             {% if section == 'profile' %}class="selected"{% endif %}>
             Profile
           </a>
           <a href="chats.html" {% if section == 'chats' %}class="selected"{% endif %}>
