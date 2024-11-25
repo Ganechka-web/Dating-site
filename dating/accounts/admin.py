@@ -18,8 +18,8 @@ class InterestAdmin(admin.ModelAdmin):
 class DatingUserAdmin(UserAdmin):
     custom_fieldsets = ((
         'Additional information', {'fields': (
-            'image', 'city', 'date_birth',
-            'phone', 'gender', 'description'
+            'image', 'city', 'date_birth', 'age',
+            'phone', 'gender', 'description',
         )}
     ),)
     add_form = DatingUserCreationForm
@@ -28,3 +28,6 @@ class DatingUserAdmin(UserAdmin):
     list_display = ['username', 'city', 'gender',
                     'date_birth', 'phone']
     fieldsets = UserAdmin.fieldsets + custom_fieldsets
+    add_fieldsets = ((
+        None, {'fields': ('username', 'password')}
+    ),) + custom_fieldsets

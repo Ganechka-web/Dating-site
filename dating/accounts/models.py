@@ -40,5 +40,6 @@ class DatingUser(AbstractUser):
     class Meta(AbstractUser.Meta):
         indexes = [
             models.Index(fields=['city']),
-            models.Index(fields=['gender'])
+            models.Index(fields=['gender']),
+            models.Index(fields=['age'])
         ]

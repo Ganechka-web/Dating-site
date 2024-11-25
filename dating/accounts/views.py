@@ -32,9 +32,11 @@ class DatingUserRegistrationView(View, TemplateResponseMixin):
 
         if form.is_valid():
             new_user = form.save(commit=False)
-            if user_age := relativedelta(datetime.now(),
+
+            user_age = relativedelta(datetime.now(),
                                          form.cleaned_data['date_birth']) \
-                                   .years >= 18:
+                                     .years
+            if user_age >= 18:
                 new_user.age = user_age
                 new_user.set_password(
                     form.cleaned_data['password1'])

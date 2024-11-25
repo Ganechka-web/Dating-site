@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
 
 {% block title %}Members{% endblock %}
 
@@ -28,15 +30,18 @@
           <select class="form-select" name="{{ field.name }}"
                   id="{{ field.auto_id }}" style="width: 50%">
             {% for value, label in field.field.choices %}
-              <option value="{{ value }}">{{ label }}</option>
+              <option value="{{ value }}"
+                      {% if value|stringformat:"s" == field.value|stringformat:"s" %}selected{% endif %}>
+                {{ label }}
+              </option>
             {% endfor %}
           </select>
         {% else %}
           <h5>{{ field.name }}</h5>
           <select name="{{ field.name }}" id="{{ field.auto_id }}"
-                  class="form-select">
+                  class="form-select" multiple>
             {% for value, label in field.field.choices %}
-              <option value="{{ value }}">{{ label }}</option>
+              <option value="{{ value }}" {% if value in field.value %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
           </select>
         {% endif %}
@@ -45,5 +50,31 @@
         <input type="submit" value="Find!">
       </div>
     </form>
+  </div>
+  <div class="container" style="padding: 25px !important">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 row-cols-el-4 g-4">
+      {% for member in members %}
+        <div class="col">
+          <div class="card" style="width: 18rem">
+            <a href="">
+              <img
+                src="{% if member.image %}{% thumbnail member.image 250x250 %}
+                {% else %}{% static 'img/default-avatar.jpg' %}{% endif %}"
+                alt="Member avatar"
+                class="card-img-top"
+              />
+            </a>
+            <div class="card-body">
+              <h5 class="card-title">{{ member.username }}</h5>
+              <p class="card-text">
+                {{ member.description|truncatewords:20 }}
+              </p>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <h3 class="text-center">Nothing found</h3>
+      {% endfor %}
+    </div>
   </div>
 {% endblock %}
