@@ -1,3 +1,6 @@
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
+
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic import DetailView
 from django.utils.decorators import method_decorator
@@ -29,11 +32,18 @@ class DatingUserRegistrationView(View, TemplateResponseMixin):
 
         if form.is_valid():
             new_user = form.save(commit=False)
-            new_user.set_password(
-                form.cleaned_data['password1'])
-            new_user.save()
+            if user_age := relativedelta(datetime.now(),
+                                         form.cleaned_data['date_birth']) \
+                                   .years >= 18:
+                new_user.age = user_age
+                new_user.set_password(
+                    form.cleaned_data['password1'])
+                new_user.save()
 
-            return redirect('login')
+                return redirect('login')
+            else:
+                form.add_error('date_birth',
+                               'You aren`t old enough to register')
 
         return self.render_to_response({'form': form})
 

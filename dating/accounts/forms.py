@@ -1,6 +1,3 @@
-from dateutil.relativedelta import relativedelta
-from datetime import datetime
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm,\
                                        UserChangeForm
@@ -24,14 +21,6 @@ class DatingUserCreationForm(UserCreationForm):
         if cd['password1'] == cd['password2']:
             return cd['password2']
         raise ValidationError('Passwords aren`t the same')
-
-    def clean_date_birth(self):
-        cd = self.cleaned_data
-        age = relativedelta(datetime.now(),
-                            cd['date_birth']).years
-        if age > 18:
-            return cd['date_birth']
-        raise ValidationError('You aren`t old enough to register')
 
 
 class DatingUserChangeForm(UserChangeForm):

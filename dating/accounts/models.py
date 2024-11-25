@@ -1,6 +1,3 @@
-from dateutil.relativedelta import relativedelta
-from datetime import datetime
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -37,13 +34,11 @@ class DatingUser(AbstractUser):
     gender = models.CharField(max_length=3,
                               choices=Gender,
                               default=Gender.UNKNOWN)
+    age = models.PositiveIntegerField(null=True,
+                                      blank=True)
 
     class Meta(AbstractUser.Meta):
         indexes = [
             models.Index(fields=['city']),
             models.Index(fields=['gender'])
         ]
-
-    def get_user_age(self) -> int:
-        return relativedelta(datetime.now(),
-                             self.date_birth).years
