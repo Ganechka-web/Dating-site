@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'chats.apps.ChatsConfig',
     'accounts.apps.AccountsConfig',
     'members.apps.MembersConfig',
     'django.contrib.admin',
@@ -77,6 +79,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'dating.wsgi.application'
+ASGI_APPLICATION = 'dating.asgi.application'
 
 
 # Database
@@ -157,3 +160,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+# Redis
+
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = 6379
+REDIS_DB = 0
