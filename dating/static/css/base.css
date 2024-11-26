@@ -86,23 +86,6 @@ main {
   border: none;
 }
 
-.profile-img-container {
-  width: 300px;
-  height: 300px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  border-radius: 50%;
-}
-
-.profile-img-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .dating-link {
   text-decoration: none;
   color: rgb(255, 125, 196);
@@ -112,7 +95,66 @@ main {
   text-decoration: underline;
 }
 
+.member-actions-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chat-button {
+  margin: 10px;
+  display: flex;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  height: 50px;
+  color: white;
+  text-decoration: none;
+  border-radius: 7px;
+  background-color: rgb(157, 42, 250);
+}
+
+.chat-button:hover {
+  color: black;
+}
+
+.back-button {
+  margin: 10px;
+  display: flex;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  height: 50px;
+  color: white;
+  text-decoration: none;
+  border-radius: 7px;
+  background-color: rgb(247, 137, 232);
+}
+
+.back-button:hover {
+  color: black;
+}
+
 /* Profile */
+.profile-img-container {
+  margin-top: 20px;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+  position: relative;
+  border-radius: 50%;
+}
+
+.profile-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .profile-actions-container {
   display: flex;

@@ -1,0 +1,43 @@
+{% load static %}
+<div class="row rom-cols-md-6">
+  <div class="col">
+    <div class="profile-img-container">
+      <img src="{% if object.image %}{{ object.image.url }}{% else %}
+                {% static 'img/default-avatar.jpg' %}{% endif %}"/>
+    </div>
+  </div>
+  <div class="col">
+    <h1 class="text-center">{{ object.username }}</h1>
+    <hr />
+    <div class="row">
+      <div class="col-6">
+        <h4 class="text-center">
+          Gender - <span class="badge bg-light text-dark">{{ object.gender }}</span>
+        </h4>
+        <h4 class="text-center">
+          Age - <span class="badge bg-light text-dark">{{ object.age }}</span>
+        </h4>
+        <h4 class="text-center">
+          City - <span class="badge bg-light text-dark">{{ object.city }}</span>
+        </h4>
+      </div>
+      <div class="col-6">
+        <h3 class="text-center">Interests</h3>
+        {% for interest in objects.interests.all %}
+          <span class="badge bg-light text-dark"> {{ interest.name }} </span>
+        {% empty %}
+          <span class="badge bg-light text-dark"> Nothing </span>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-12">
+      {{ object.description }}
+    </div>
+    <div class="col-12">
+      <div class="member-actions-container">
+        <a href="" id="backButton" class="back-button">Back to the list</a>
+        <a href="" class="chat-button">Have a chat!!</a>
+      </div>
+    </div>
+  </div>
+</div>

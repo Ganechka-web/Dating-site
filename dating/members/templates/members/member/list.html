@@ -31,7 +31,7 @@
                   id="{{ field.auto_id }}" style="width: 50%">
             {% for value, label in field.field.choices %}
               <option value="{{ value }}"
-                      {% if value|stringformat:"s" == field.value|stringformat:"s" %}selected{% endif %}>
+                      {% if value|stringformat:'s' == field.value|stringformat:'s' %}selected{% endif %}>
                 {{ label }}
               </option>
             {% endfor %}
@@ -52,19 +52,19 @@
       </div>
     </form>
   </div>
-  <div class="container" style="padding: 25px !important">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 row-cols-el-4 g-4">
+  <div class="container" style="padding: 25px !important;"
+       id="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-el-4 g-4">
       {% for member in members %}
         <div class="col">
-          <div class="card" style="width: 18rem">
-            <a href="">
+          <div class="card" style="width: 18rem; cursor: pointer;"
+               data-id="{{ member.id }}" data-username="{{ member.username }}">
               <img
                 src="{% if member.image %}{% thumbnail member.image 250x250 %}
                 {% else %}{% static 'img/default-avatar.jpg' %}{% endif %}"
                 alt="Member avatar"
                 class="card-img-top"
               />
-            </a>
             <div class="card-body">
               <h5 class="card-title">{{ member.username }}</h5>
               <p class="card-text">
@@ -79,3 +79,29 @@
     </div>
   </div>
 {% endblock %}
+
+{% block domready %}
+  let cards = document.querySelectorAll('.card');
+  let targetContainer = document.getElementById('container');
+
+  cards.forEach(card => {
+    let userURL = `{{ protocol }}{{ domain }}/members/${card.dataset.id}/${card.dataset.username}/`
+
+    card.addEventListener('click', (event) => {
+      fetch(userURL)
+      .then(response => response.text())
+      .then(html => {
+        const previousURL = window.location.href;
+
+        let parser = new DOMParser();
+
+        let detailPage = parser.parseFromString(html, 'text/html');
+        let backButton = detailPage.getElementById('backButton');
+        backButton.href = previousURL;
+
+        targetContainer.innerHTML = '';
+        targetContainer.insertAdjacentHTML('beforeEnd', html);
+      });
+    });
+  });
+{% endblock %} 

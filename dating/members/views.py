@@ -1,3 +1,4 @@
+from django.views.generic import DetailView
 from django.views.generic.base import View, TemplateResponseMixin
 from django.contrib.auth import get_user_model
 
@@ -13,6 +14,7 @@ class MembersListView(View, TemplateResponseMixin):
     def get(self, request):
         form = FilterMembersForm(request.GET)
 
+        members = DatingUser.objects.all()
         if request.GET:
             filters = {'is_active': True}
 
@@ -27,9 +29,22 @@ class MembersListView(View, TemplateResponseMixin):
             if request.GET.get('city'):
                 filters['city__in'] = request.GET.getlist('cities')
 
-            members = DatingUser.objects.filter(**filters)
+            members = members.filter(**filters).distinct()
             return self.render_to_response({'section': 'members',
                                             'filter_form': form,
                                             'members': members})
         return self.render_to_response({'section': 'members',
-                                        'filter_form': form})
+                                        'filter_form': form,
+                                        'members': members})
+
+
+class MemberDeatilView(DetailView):
+    template_name = 'members/member/detail.html'
+    model = DatingUser
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['section'] = 'members'
+
+        return context
