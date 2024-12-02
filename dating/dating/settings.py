@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import dotenv
 from pathlib import Path
+
+
+dotenv.load_dotenv(os.path.join(r'D:\DjangoProjects\Dating-site\venv', '.env'))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-54@pl02mi=n&e$-te5axa8nrxubz9*ya!(wy1d!eg09(q0d+$7'
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dating',
         'USER': 'postgres',
-        'PASSWORD': 'suser_postgres#17.11',
+        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
         'HOST': '127.0.0.1',
         'PORT': 5432,
     }
@@ -153,16 +157,26 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, "media")
 
 # Email backend
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # iternal ips
 
 INTERNAL_IPS = [
-    "127.0.0.1",
+    '127.0.0.1',
 ]
 
-# Redis
+# Redis / channels
 
 REDIS_HOST = '127.0.0.1'
 REDIS_PORT = 6379
 REDIS_DB = 0
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+            'password': os.environ['REDIS_PASSWORD']
+        },
+    },
+}

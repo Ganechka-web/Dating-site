@@ -24,7 +24,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('members/', include('members.urls', namespace='members'))
+    path('members/', include('members.urls', namespace='members')),
+    path('chats/', include('chats.urls', namespace='chats'))
 ]
 
 if settings.DEBUG:

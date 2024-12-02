@@ -94,13 +94,43 @@
         const previousURL = window.location.href;
 
         let parser = new DOMParser();
-
         let detailPage = parser.parseFromString(html, 'text/html');
+
+        // Add possibility to come back to filters
         let backButton = detailPage.getElementById('backButton');
         backButton.href = previousURL;
 
         targetContainer.innerHTML = '';
         targetContainer.insertAdjacentHTML('beforeEnd', html);
+
+        console.log('before addEventListener');
+        let chatButton = document.getElementById('chatButton');
+        console.log(chatButton);
+        chatButton.addEventListener('click', (chatEvent) => {
+          console.log('In addEventListener');
+          const createChatURL = '{% url 'chats:create_chat' %}';
+          let options = {
+              method: 'POST',
+              headers: {'X-CSRFToken': csrftoken},
+              mode: 'same-origin'
+          };
+
+          // create form
+          let createChatForm = new FormData();
+          createChatForm.append('member2_id', card.dataset.id);
+          options['body'] = createChatForm;
+
+          // POST request to create chat
+          fetch(createChatURL, options)
+          .then(response => response.json())
+          .then(data => {
+              if (data['status'] === 'ok') {
+                  window.location.pathname = '{% url 'chats:chats_list' %}'
+              } else if (data['status'] === 'blocked') {
+                  alert('error');
+              }
+          });
+        });
       });
     });
   });

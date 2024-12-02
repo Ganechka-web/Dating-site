@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}Your chats{% endblock %}
+
+{% block content %}
+  <div class="chats-container">
+    <h1>Your active conversations</h1><hr />
+
+    {% for chat in chats %}
+      {% with member2=chat.member2 %}
+        <div class="chat">
+          <img src="{% if member2.image %}{% thumbnail member2.image 100x100 %}
+                    {% else %}{% static 'img/default-avatar.jpg' %}{% endif %}"
+               class="chat-user-avatar">
+          <div class="chat-info">
+            <h5 class="username">
+              <span class="badge bg-light text-dark">{{ mebmber2.username }}</span>
+            </h5>
+            <h5 class="date">
+              12.12.2111
+            </h5>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet enim odit pariatur qui voluptatibus!
+            </p>
+          </div>
+        </div>
+      {% endwith %}
+    {% empty %}
+      <p>
+        You haven`t any chats yet. <a href="{% url 'members:members_list' %}" class="dating-link">Fix it!</a>
+      </p>
+    {% endfor %}
+  </div>
+{% endblock %}

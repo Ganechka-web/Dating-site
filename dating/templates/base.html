@@ -31,7 +31,8 @@
              {% if section == 'profile' %}class="selected"{% endif %}>
             Profile
           </a>
-          <a href="chats.html" {% if section == 'chats' %}class="selected"{% endif %}>
+          <a href="{% url 'chats:chats_list' %}"
+             {% if section == 'chats' %}class="selected"{% endif %}>
             Chats
           </a>
         </div>
