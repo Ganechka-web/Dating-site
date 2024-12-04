@@ -18,13 +18,18 @@ class CreateChatView(View):
             cd = form.cleaned_data
 
             member2 = DatingUser.objects.get(id=cd['member2_id'])
-            Chat.objects.get_or_create(member1=request.user,
-                                       member2=member2)
+            try:
+                Chat.objects.get(members__in=[request.user, member2])
+            except Chat.DoesNotExist:
+                new_chat = Chat.objects.create()
+                new_chat.members.add(request.user, member2)
+
             return JsonResponse({'status': 'ok'})
 
 
 class ChatsListView(ListView):
     template_name = 'chats/chat/list.html'
+    context_object_name = 'chats'
     model = Chat
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -34,12 +39,15 @@ class ChatsListView(ListView):
 
         return context
 
+    def get_queryset(self):
+        return self.model.objects.filter
 
-class ChatDetailConnectView(View, TemplateResponseMixin):
+
+class ChatConnectDetailView(View, TemplateResponseMixin):
     template_name = 'chats/chat/detail.html'
 
-    def get(self, group_id: str):
-        chat = Chat.objects.get(id=group_id)
+    def get(self, request, chat_id: str):
+        chat = Chat.objects.get(id=chat_id)
 
-        self.render_to_response({'section': 'chats',
-                                 'chat': chat})
+        return self.render_to_response({'section': 'chats',
+                                        'chat': chat})

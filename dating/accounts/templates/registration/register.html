@@ -3,30 +3,32 @@
 {% block title %}Registration{% endblock %}
 
 {% block content %}
-  <div class="form-container">
-    <form method="post">
-      {% csrf_token %}
-      <h3 class="text-center">Registration</h3>
-      {% for field in form %}
+  <main>
+    <div class="form-container">
+      <form method="post">
+        {% csrf_token %}
+        <h3 class="text-center">Registration</h3>
+        {% for field in form %}
         <div>
           {% if field.name == 'date_birth' %}
-            <label for="{{ field.auto_id }}">{{ field.name|capfirst }}</label>
-            <input type="date" name="{{ field.html_name }}" id="{{ field.auto_id }}">
+          <label for="{{ field.auto_id }}">{{ field.name|capfirst }}</label>
+          <input type="date" name="{{ field.html_name }}" id="{{ field.auto_id }}">
           {% else %}
-            <label for="{{ field.auto_id }}">{{ field.name|capfirst }}</label>
-            {{ field }}
+          <label for="{{ field.auto_id }}">{{ field.name|capfirst }}</label>
+          {{ field }}
           {% endif %}
         </div>
         {% for error in field.errors %}
-          <div class="alert alert-danger" role="alert">
-            {{ error }}
-          </div>
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
         {% endfor %}
-      {% endfor %}
-      <div>
-        <input type="submit" value="Register">
-      </div>
-    </form>
-  </div>
+        {% endfor %}
+        <div>
+          <input type="submit" value="Register">
+        </div>
+      </form>
+    </div>
+  </main>
 {% endblock %}
 kjrkjmjk#$kckc122

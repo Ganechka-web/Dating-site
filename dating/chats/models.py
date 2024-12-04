@@ -11,19 +11,21 @@ class Chat(models.Model):
     objects = models.Manager()
 
     id = models.UUIDField(primary_key=True,
-                          default=uuid.uuid4(),
+                          default=uuid.uuid4,
                           editable=False)
-    member1 = models.ForeignKey(DatingUser,
-                                related_name='member1_groups',
-                                null=True,
-                                on_delete=models.SET_NULL)
-    member2 = models.ForeignKey(DatingUser,
-                                related_name='member2_groups',
-                                null=True,
-                                on_delete=models.SET_NULL)
+    members = models.ManyToManyField(DatingUser,
+                                     related_name='chats')
+    # member1 = models.ForeignKey(DatingUser,
+    #                             related_name='member1_groups',
+    #                             null=True,
+    #                             on_delete=models.SET_NULL)
+    # member2 = models.ForeignKey(DatingUser,
+    #                             related_name='member2_groups',
+    #                             null=True,
+    #                             on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f'{self.member1.username} and {self.member2.username}'
+        return f'Chat {self.id}'
 
     def get_absolute_url(self):
         return reverse_lazy('chat_detail', args=[self.id])

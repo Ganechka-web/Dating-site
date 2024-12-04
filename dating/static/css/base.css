@@ -180,6 +180,13 @@ main {
 
 /* Chats */
 
+.chats-main {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .chats-container {
   width: 100%;
   height: auto;

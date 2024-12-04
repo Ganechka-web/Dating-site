@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 import dotenv
+from urllib.parse import quote
 from pathlib import Path
 
 
@@ -170,13 +171,13 @@ INTERNAL_IPS = [
 REDIS_HOST = '127.0.0.1'
 REDIS_PORT = 6379
 REDIS_DB = 0
+REDIS_PASSWORD = os.environ['REDIS_PASSWORD']
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
-            'password': os.environ['REDIS_PASSWORD']
+            'hosts': [f'redis://:{quote(REDIS_PASSWORD)}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'],
         },
     },
 }

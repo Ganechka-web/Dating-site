@@ -14,7 +14,7 @@ class MembersListView(View, TemplateResponseMixin):
     def get(self, request):
         form = FilterMembersForm(request.GET)
 
-        members = DatingUser.objects.all()
+        members = DatingUser.objects.exclude(id=request.user.id)
         if request.GET:
             filters = {'is_active': True}
 

@@ -3,49 +3,51 @@
 {% block title %}Add information{% endblock %}
 
 {% block content %}
-  <div class="form-container">
-    <form method="post" enctype="multipart/form-data">
-      <div>
-        <h3>Add information</h3>
-      </div>
-      {% csrf_token %}
-      {% for field in form %}
+  <main>
+    <div class="form-container">
+      <form method="post" enctype="multipart/form-data">
+        <div>
+          <h3>Add information</h3>
+        </div>
+        {% csrf_token %}
+        {% for field in form %}
         <div>
           {% if field.name == 'image' %}
-            {% if field.value %}
-              <img src="{{ field.value.url }}" alt="User avatar" id="targetImageImg">
-            {% endif %}
-            <label for="targetImageInput">{{ field.name }}</label>
-            <input class="form-control form-control-lg" id="targetImageInput"
-                   name="{{ field.name }}" type="file">
+          {% if field.value %}
+          <img src="{{ field.value.url }}" alt="User avatar" id="targetImageImg">
+          {% endif %}
+          <label for="targetImageInput">{{ field.name }}</label>
+          <input class="form-control form-control-lg" id="targetImageInput"
+                 name="{{ field.name }}" type="file">
           {% elif field.name == 'gender' %}
-            <label for="{{ field.auto_id }}">{{ field.name }}</label>
-            <select class="form-select form-select-lg mb-3"
-                    name="{{ field.name }}"
-                    id="{{ field.auto_id }}">
-              {% for value, label in field.field.choices %}
-                <option value="{{ value }}"
-                        {% if value == field.value %}selected{% endif %}>
-                  {{ label }}
-                </option>
-              {% endfor %}
-            </select>
+          <label for="{{ field.auto_id }}">{{ field.name }}</label>
+          <select class="form-select form-select-lg mb-3"
+                  name="{{ field.name }}"
+                  id="{{ field.auto_id }}">
+            {% for value, label in field.field.choices %}
+            <option value="{{ value }}"
+                    {% if value == field.value %}selected{% endif %}>
+              {{ label }}
+            </option>
+            {% endfor %}
+          </select>
           {% else %}
-            <label for="{{ field.auto_id }}">{{ field.name }}</label>
-            {{ field }}
+          <label for="{{ field.auto_id }}">{{ field.name }}</label>
+          {{ field }}
           {% endif %}
         </div>
         {% for error in field.errors %}
-          <div class="alert alert-danger" role="alert">
-            {{ error }}
-          </div>
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
         {% endfor %}
-      {% endfor %}
-      <div>
-        <input type="submit" value="Add information">
-      </div>
-    </form>
-  </div>
+        {% endfor %}
+        <div>
+          <input type="submit" value="Add information">
+        </div>
+      </form>
+    </div>
+  </main>
 {% endblock %}
 
 {% block domready %}
