@@ -181,3 +181,8 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# Celery conf
+
+CELERY_BROKER_URL = f'amqp://suser_rabbitmq:{quote(os.environ['RABBITMQ_PASSWORD'])}@127.0.0.1:5672/'
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
