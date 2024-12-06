@@ -169,15 +169,16 @@ INTERNAL_IPS = [
 # Redis / channels
 
 REDIS_HOST = '127.0.0.1'
-REDIS_PORT = 6379
+REDIS_PORT = 6380
 REDIS_DB = 0
-REDIS_PASSWORD = os.environ['REDIS_PASSWORD']
+REDIS_USER = os.environ['REDIS_USER']
+REDIS_USER_PASSWORD = os.environ['REDIS_USER_PASSWORD']
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [f'redis://:{quote(REDIS_PASSWORD)}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'],
+            'hosts': [f'redis://{REDIS_USER}:{quote(REDIS_USER_PASSWORD)}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'],
         },
     },
 }

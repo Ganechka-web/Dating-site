@@ -51,22 +51,51 @@
   );
 
   const chatURL = `ws://${window.location.host}/ws/chats/${chatId}/`
-
   const chatSocket = new WebSocket(chatURL);
 
   // when we have a message from websocket
   chatSocket.onmessage = function(event) {
+
     const data = JSON.parse(event.data);
     const chat = document.getElementById('targetChat');
-    chat.innerHTML += `<div class="my-message">
+    const current_date = new Date(data.sent).toLocaleString('ru');
+    const isMe = data.user_id === member1Id;
+    const messageClass = isMe ? 'my-message' : 'other-message';
+
+    chat.innerHTML += `<div class="${messageClass}">
                          <span class="badge text-bg-secondary">
-                           Username 12:30 12.12.1212
+                           ${data.user_username} ${current_date}
                          </span>
                          <p>
                            ${data.message}
                          </p>
                        </div>`;
-  }
+
+    if (data['user_id'] === member1Id) {
+      const saveMessageURL = '{% url 'chats:message_save' %}';
+      let options = {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin'
+      };
+
+      // create message form
+      let messageForm = new FormData();
+      messageForm.append('chat_id', chatId);
+      messageForm.append('content', data['message']);
+      options['body'] = messageForm;
+
+      fetch(saveMessageURL, options)
+      .then(response => response.json())
+      .then(data => {
+        if (data['status'] === 'saved') {
+        } else {
+          console.log('error during saving');
+        }
+      });
+    }
+  };
+
 
   chatSocket.onclose = function(event) {
     console.log('chatSocket have been closed unexceptly');
@@ -78,8 +107,10 @@
 
   chatSubmit.addEventListener('click', function(event) {
     const message = chatInput.value;
+    console.log('submit exevtn value = ' + message)
     if (message) {
-      chatSocket.send(JSON.stringify({'message': message}));
+      chatSocket.send(JSON.stringify({'message': message,
+                                      'user_id': member1Id}));
       chatInput.value = '';
       chatInput.focus();
     }
