@@ -19,9 +19,8 @@
         src="https://www.toppenoplast.ru/wp-content/uploads/serdtse-krasnoe.jpg"
         alt=""
       />
-    </div>
-    <h1 style="padding: 10px">Dating</h1>
-    <div class="navbar">
+      </div>
+      <h1 style="padding: 10px">Dating</h1>
       {% if user.is_authenticated %}
         <div class="navbar">
           <a href="{% url 'members:members_list' %}"
@@ -38,15 +37,6 @@
           </a>
         </div>
       {% endif %}
-    </div>
-    {% if user.is_authenticated %}
-      <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <input type="submit" value="log-out">
-      </form>
-    {% else %}
-      <a href="{% url 'login' %}" class="log-in-button">Log-in</a>
-    {% endif %}
   </header>
   {% block content %}
   {% endblock %}
