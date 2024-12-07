@@ -1,5 +1,7 @@
-from django.views.generic import DetailView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic.base import View, TemplateResponseMixin
+from django.views.generic import DetailView
 from django.contrib.auth import get_user_model
 
 from .forms import FilterMembersForm
@@ -8,6 +10,7 @@ from .forms import FilterMembersForm
 DatingUser = get_user_model()
 
 
+@method_decorator(login_required, name='dispatch')
 class MembersListView(View, TemplateResponseMixin):
     template_name = 'members/member/list.html'
 

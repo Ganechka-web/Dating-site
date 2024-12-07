@@ -166,6 +166,13 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
+# Login/out auth
+
+LOGIN_REDIRECT_URL = 'user_detail'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+
+
 # Redis / channels
 
 REDIS_HOST = '127.0.0.1'

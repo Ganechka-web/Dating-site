@@ -135,8 +135,50 @@ main {
 .back-button:hover {
   color: black;
 }
+.log-in-button {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-right: 10px;
+  padding: 10px;
+  width: 150px;
+  height: 50%;
+  color: white;
+  text-decoration: none;
+  background-color: rgb(250, 32, 232);
+  border-radius: 7px;
+}
+
+.log-in-button:hover {
+  color: black;
+}
+
+header form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header form input[type="submit"] {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-right: 10px;
+  width: 150px;
+  height: 50%;
+  color: white;
+  text-decoration: none;
+  border: 0px;
+  background-color: rgb(250, 32, 232);
+  border-radius: 7px;
+}
+
+header form input[type="submit"]:hover {
+  color: black;
+}
 
 /* Profile */
+
 .profile-img-container {
   margin-top: 20px;
   width: 300px;

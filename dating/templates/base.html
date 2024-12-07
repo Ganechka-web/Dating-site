@@ -19,24 +19,32 @@
         src="https://www.toppenoplast.ru/wp-content/uploads/serdtse-krasnoe.jpg"
         alt=""
       />
-      </div>
-      <h1 style="padding: 10px">Dating</h1>
-      {% if user.is_authenticated %}
-        <div class="navbar">
-          <a href="{% url 'members:members_list' %}"
-             {% if section == 'members' %}class="selected"{% endif %}>
-            Members
-          </a>
-          <a href="{% url 'user_detail' request.user.id request.user.username %}"
-             {% if section == 'profile' %}class="selected"{% endif %}>
-            Profile
-          </a>
-          <a href="{% url 'chats:chats_list' %}"
-             {% if section == 'chats' %}class="selected"{% endif %}>
-            Chats
-          </a>
-        </div>
+    </div>
+    <h1 style="padding: 10px">Dating</h1>
+    <div class="navbar">
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'members:members_list' %}"
+           {% if section == 'members' %}class="selected"{% endif %}>
+          Members
+        </a>
+        <a href="{% url 'user_detail' request.user.id request.user.username %}"
+           {% if section == 'profile' %}class="selected"{% endif %}>
+          Profile
+        </a>
+        <a href="{% url 'chats:chats_list' %}"
+           {% if section == 'chats' %}class="selected"{% endif %}>
+          Chats
+        </a>
       {% endif %}
+    </div>
+    {% if request.user.is_authenticated %}
+      <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Log-out">
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}" class="log-in-button">Log-in</a>
+    {% endif %}
   </header>
   {% block content %}
   {% endblock %}
