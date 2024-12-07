@@ -1,7 +1,7 @@
 header {
   height: auto;
   width: 100%;
-  background-color: rgb(255, 125, 196);
+  background-color: #6869ae;
   display: flex;
 }
 
@@ -26,7 +26,7 @@ header .logo {
   width: 150px;
   height: 2em;
   border-radius: 7%;
-  background-color: rgb(255, 82, 177);
+  background-color: #b44f98;
   color: white;
   font-size: 1em;
   text-align: center;
@@ -36,7 +36,7 @@ header .logo {
   color: black;
 }
 .navbar a.selected {
-  background-color: rgb(255, 31, 154);
+  background-color: #e72479;
 }
 
 main {
@@ -48,7 +48,7 @@ main {
   height: auto;
   width: 15%;
   display: flex;
-  background-color: rgb(206, 205, 205);
+  background-color: #b44f98;
   border-bottom-right-radius: 5%;
 }
 
@@ -58,14 +58,14 @@ main {
 }
 
 .form-check-input:checked {
-  background-color: rgb(248, 169, 255) !important;
+  background-color: #6869ae !important;
   border: 0;
 }
 
 .form-select:focus,
 .form-select:active,
 .form-select.show {
-  background-color: rgb(248, 169, 255) !important;
+  background-color: #6869ae !important;
 }
 
 .filters input[type="submit"] {
@@ -73,7 +73,7 @@ main {
   height: auto;
   margin: 10px;
   border-radius: 7px;
-  background-color: rgb(247, 137, 232);
+  background-color:  #e72479;
   border: none;
 }
 
@@ -82,13 +82,13 @@ main {
   height: auto;
   margin: 10px;
   border-radius: 7px;
-  background-color: rgb(247, 137, 232);
+  background-color:  #e72479;
   border: none;
 }
 
 .dating-link {
   text-decoration: none;
-  color: rgb(255, 125, 196);
+  color:  #b44f98;
 }
 
 .dating-link:hover {
@@ -111,7 +111,7 @@ main {
   color: white;
   text-decoration: none;
   border-radius: 7px;
-  background-color: rgb(157, 42, 250);
+  background-color: #b44f98;
 }
 
 .chat-button:hover {
@@ -129,7 +129,7 @@ main {
   color: white;
   text-decoration: none;
   border-radius: 7px;
-  background-color: rgb(247, 137, 232);
+  background-color: #b44f98;
 }
 
 .back-button:hover {
@@ -145,7 +145,7 @@ main {
   height: 50%;
   color: white;
   text-decoration: none;
-  background-color: rgb(250, 32, 232);
+  background-color: #b44f98;
   border-radius: 7px;
 }
 
@@ -169,7 +169,7 @@ header form input[type="submit"] {
   color: white;
   text-decoration: none;
   border: 0px;
-  background-color: rgb(250, 32, 232);
+  background-color: #b44f98;
   border-radius: 7px;
 }
 
@@ -212,7 +212,7 @@ header form input[type="submit"]:hover {
   color: white;
   border: none;
   border-radius: 4px;
-  background-color: rgb(247, 137, 232);
+  background-color: #e72479;
   text-decoration: none;
 }
 
@@ -288,7 +288,7 @@ header form input[type="submit"]:hover {
 
 .chat-input input[type="submit"] {
   border: none;
-  background-color: rgb(247, 137, 232);
+  background-color: #b44f98;
   width: 15%;
 }
 
@@ -341,12 +341,12 @@ header form input[type="submit"]:hover {
 
 .form-container form input[type="submit"] {
   border-radius: 7px;
-  background-color: rgb(247, 137, 232);
+  background-color: #b44f98;
   border: none;
 }
 
 .form-container form input[type="submit"]:hover {
-  background-color: rgb(247, 108, 228);
+  background-color: #e72479;
 }
 
 .form-container form div {
