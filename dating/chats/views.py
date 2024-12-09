@@ -3,6 +3,7 @@ from django.views.generic.base import View, TemplateResponseMixin
 from django.views.generic import ListView
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from django.db.models import Q
 
 from .forms import CreateChatForm, SaveMessageForm
 from .models import Chat
@@ -15,18 +16,22 @@ DatingUser = get_user_model()
 class CreateChatView(View):
     def post(self, request):
         form = CreateChatForm(request.POST)
-
         if form.is_valid():
             cd = form.cleaned_data
 
             member2 = DatingUser.objects.get(id=cd['member2_id'])
-            try:
-                Chat.objects.get(members__in=[request.user, member2])
-            except Chat.DoesNotExist:
+            chats_members_ids_for_cur_user = [
+                member.id
+                for chat in Chat.objects.filter(members__in=[request.user.id])
+                for member in chat.members.exclude(id=request.user.id)
+            ]
+
+            if member2.id not in chats_members_ids_for_cur_user:
                 new_chat = Chat.objects.create()
                 new_chat.members.add(request.user, member2)
 
             return JsonResponse({'status': 'ok'})
+        return JsonResponse({'status': 'error'})
 
 
 class ChatsListView(ListView):

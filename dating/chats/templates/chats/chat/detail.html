@@ -18,11 +18,30 @@
           <span class="badge bg-light text-dark">{{ chat|get_other_user:request.user }}</span>
         </h5>
         <h5 class="date">
-          <span class="badge bg-light text-dark">{{ chat.messages.last.sent }}</span>
+          <span class="badge bg-light text-dark">
+            {% if chat.messages.last %}
+              {{ chat.messages.last.sent }}
+            {% else %}
+              Write your first message!
+            {% endif %}
+          </span>
         </h5>
       </div>
     </div>
     <div class="chat-content" id="targetChat">
+      {% for message in chat.messages.all %}
+        {% with sender=message.sender %}
+          <div class="{% if sender.id == request.user.id %}my-message
+                      {% else %}other-message{% endif %}">
+            <span class="badge text-bg-secondary">
+              {{ sender.username }} {{ message.sent }}
+            </span>
+            <p>
+              {{ message.content }}
+            </p>
+          </div>
+        {% endwith %}
+      {% endfor %}
     </div>
     <div class="chat-input">
       <input type="text" id="chatInput" placeholder="Write a message" />

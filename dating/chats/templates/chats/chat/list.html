@@ -21,12 +21,16 @@
               <h5 class="username">
                 <span class="badge bg-light text-dark">{{ member2.username }}</span>
               </h5>
-              {% with last_massege=chat.messages.last %}
+              {% with last_message=chat.messages.last %}
               <h5 class="date">
-                {{ last_message.sent|default:'??-??-???' }}
+                {{ last_message.sent}}
               </h5>
               <p>
-                {{ last_message.content }}
+                {% if last_message %}
+                  ({{ last_message.sender.username }}) {{ last_message.content }}
+                {% else %}
+                  Write your first message!
+                {% endif %}
               </p>
               {% endwith %}
             </div>
