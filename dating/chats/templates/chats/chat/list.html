@@ -22,24 +22,24 @@
                 <span class="badge bg-light text-dark">{{ member2.username }}</span>
               </h5>
               {% with last_message=chat.messages.last %}
-              <h5 class="date">
-                {{ last_message.sent}}
-              </h5>
-              <p>
-                {% if last_message %}
-                  ({{ last_message.sender.username }}) {{ last_message.content }}
-                {% else %}
-                  Write your first message!
-                {% endif %}
-              </p>
+                <h5 class="date">
+                  {{ last_message.sent}}
+                </h5>
+                <p>
+                  {% if last_message %}
+                    ({{ last_message.sender.username }}) {{ last_message.content }}
+                  {% else %}
+                    Write your first message!
+                  {% endif %}
+                </p>
               {% endwith %}
             </div>
           </div>
         {% endwith %}
       {% empty %}
-      <p>
-        You haven`t any chats yet. <a href="{% url 'members:members_list' %}" class="dating-link">Fix it!</a>
-      </p>
+        <p>
+          You haven`t any chats yet. <a href="{% url 'members:members_list' %}" class="dating-link">Fix it!</a>
+        </p>
       {% endfor %}
     </div>
   </main>

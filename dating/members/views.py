@@ -29,7 +29,7 @@ class MembersListView(View, TemplateResponseMixin):
                 filters['age__gte'] = request.GET['min_age']
             if request.GET.get('max_age'):
                 filters['age__lte'] = request.GET['max_age']
-            if request.GET.get('city'):
+            if request.GET.get('cities'):
                 filters['city__in'] = request.GET.getlist('cities')
 
             members = members.filter(**filters).distinct()
@@ -44,7 +44,6 @@ class MembersListView(View, TemplateResponseMixin):
 class MemberDeatilView(DetailView):
     template_name = 'members/member/detail.html'
     model = DatingUser
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
