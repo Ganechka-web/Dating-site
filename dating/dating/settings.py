@@ -16,7 +16,7 @@ from urllib.parse import quote
 from pathlib import Path
 
 
-dotenv.load_dotenv(os.path.join(r'D:\DjangoProjects\Dating-site\venv', '.env'))
+dotenv.load_dotenv(os.path.join(r'D:\DjangoProjects\Dating-site\.venv', '.env'))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -95,7 +95,7 @@ DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dating',
-        'USER': 'postgres',
+        'USER': 'dating_suser',
         'PASSWORD': os.environ['POSTGRES_PASSWORD'],
         'HOST': '127.0.0.1',
         'PORT': 5432,
