@@ -53,3 +53,9 @@ If user clicks on another user`s card he turns up on the detail page which conta
 
 When user clicks 'have a chat' button on the server a chat will be created, user can see all chats on chats page, 
 
+![img.png](readme_images/img_8.png)
+
+Each chat contains two users, and both users can hava a chat. For example: chat between dating_suser and Some_pretty_girl (different browsers).
+All messages will be saved after user wil quit chat.
+
+![img.png](readme_images/img_9.png)

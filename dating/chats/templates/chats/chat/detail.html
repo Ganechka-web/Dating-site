@@ -8,26 +8,28 @@
 
 {% block content %}
   <main class="chats-main">
-    <div class="chat">
-      <img src="{% if oponent.image %}{{ oponent.image.url }}{% else %}
-                {% static 'img/default-avatar.jpg' %}{% endif %}"
-           alt="Mebmer image"
-           class="chat-user-avatar">
-      <div class="chat-info">
-        <h5 class="username">
-          <span class="badge bg-light text-dark">{{ chat|get_other_user:request.user }}</span>
-        </h5>
-        <h5 class="date">
-          <span class="badge bg-light text-dark">
-            {% if chat.messages.last %}
-              {{ chat.messages.last.sent }}
-            {% else %}
-              Write your first message!
-            {% endif %}
-          </span>
-        </h5>
+    {% with other_user=chat|get_other_user:request.user %}
+      <div class="chat">
+        <img src="{% if other_user.image %}{{ other_user.image.url }}{% else %}
+                  {% static 'img/default-avatar.jpg' %}{% endif %}"
+             alt="Mebmer image"
+             class="chat-user-avatar">
+        <div class="chat-info">
+          <h5 class="username">
+            <span class="badge bg-light text-dark">{{ other_user.username }}</span>
+          </h5>
+          <h5 class="date">
+            <span class="badge bg-light text-dark">
+              {% if chat.messages.last %}
+                {{ chat.messages.last.sent }}
+              {% else %}
+                Write your first message!
+              {% endif %}
+            </span>
+          </h5>
+        </div>
       </div>
-    </div>
+    {% endwith %}
     <div class="chat-content" id="targetChat">
       {% for message in chat.messages.all %}
         {% with sender=message.sender %}

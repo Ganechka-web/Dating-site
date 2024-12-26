@@ -36,8 +36,6 @@ class DatingUser(AbstractUser):
                               default=Gender.UNKNOWN)
     age = models.PositiveIntegerField(null=True,
                                       blank=True)
-    first_name = models.CharField(max_length=150, blank=True, null=True)
-    last_name = models.CharField(max_length=150, blank=True, null=True)
 
     class Meta(AbstractUser.Meta):
         indexes = [

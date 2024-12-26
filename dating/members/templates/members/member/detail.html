@@ -23,7 +23,7 @@
       </div>
       <div class="col-6">
         <h3 class="text-center">Interests</h3>
-        {% for interest in objects.interests.all %}
+        {% for interest in object.interests.all %}
           <span class="badge bg-light text-dark"> {{ interest.name }} </span>
         {% empty %}
           <span class="badge bg-light text-dark"> Nothing </span>
