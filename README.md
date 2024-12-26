@@ -59,3 +59,60 @@ Each chat contains two users, and both users can hava a chat. For example: chat 
 All messages will be saved after user wil quit chat.
 
 ![img.png](readme_images/img_9.png)
+
+# Interesting implementation features
+
+## Messages saving
+
+To improve user experience, message is processing in several steps.
+
+Firstly, after user has pressed the "Sent message" button, message is displaying on the both screens (with js).
+
+```javascript
+const data = JSON.parse(event.data);
+const chat = document.getElementById('targetChat');
+const current_date = new Date(data.sent).toLocaleString('ru');
+const isMe = data.user_id === member1Id;
+const messageClass = isMe ? 'my-message' : 'other-message';
+
+chat.innerHTML += `<div class="${messageClass}">
+                     <span class="badge text-bg-secondary">
+                       ${data.user_username} ${current_date}
+                     </span>
+                     <p>
+                       ${data.message}
+                     </p>
+                   </div>`;
+```
+
+Secondly, from the javascript, a POST request is sending on a "message_save" view where message data is processing
+
+```python
+@require_POST
+def message_save(request) -> JsonResponse:
+    form = SaveMessageForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+
+        save_message.delay(request.user.id,
+                           cd['chat_id'],
+                           cd['content'])
+
+        return JsonResponse({'status': 'saved'})
+    return JsonResponse({'status': 'error'})
+```
+
+And Finally, "message_save" view creates a celery task to save message in database asynchronously.
+
+```python
+@shared_task(ignore_result=True)
+def save_message(user_id, chat_id, content):
+    user = DatingUser.objects.get(id=user_id)
+    chat = Chat.objects.get(id=chat_id)
+    Message.objects.create(
+        content=content,
+        sender=user,
+        chat=chat)
+```
+
+This implementation doesn`t make user to wait
