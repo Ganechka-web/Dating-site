@@ -14,7 +14,7 @@ urlpatterns = [
          views.DatingUserLogoutView.as_view(),
          name='logout'),
     path('<int:pk>/<str:username>/profile/',
-         views.DatingUserDatailView.as_view(),
+         views.DatingUserDetailView.as_view(),
          name='user_detail'),
     path('update-interests/',
          views.DatingUserUpdateInterestsView.as_view(),

@@ -22,7 +22,7 @@ DatingUser = get_user_model()
 class DatingUserRegistrationView(View, TemplateResponseMixin):
     template_name = 'registration/register.html'
 
-    def get(self, reguest):
+    def get(self, request):
         form = DatingUserCreationForm()
 
         return self.render_to_response({'form': form})
@@ -32,7 +32,6 @@ class DatingUserRegistrationView(View, TemplateResponseMixin):
 
         if form.is_valid():
             new_user = form.save(commit=False)
-
             user_age = relativedelta(datetime.now(),
                                      form.cleaned_data['date_birth']).years
             if user_age >= 18:
@@ -86,7 +85,7 @@ class DatingUserLogoutView(View):
 
 
 @method_decorator(login_required, name='dispatch')
-class DatingUserDatailView(DetailView):
+class DatingUserDetailView(DetailView):
     template_name = 'accounts/dating_user/profile.html'
     model = DatingUser
 

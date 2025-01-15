@@ -3,7 +3,6 @@ from django.views.generic.base import View, TemplateResponseMixin
 from django.views.generic import ListView
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
-from django.db.models import Q
 
 from .forms import CreateChatForm, SaveMessageForm
 from .models import Chat
@@ -62,6 +61,10 @@ class ChatConnectDetailView(View, TemplateResponseMixin):
 
 @require_POST
 def message_save(request) -> JsonResponse:
+    """
+    Receives json data with message info and
+    sets off celery task
+    """
     form = SaveMessageForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data

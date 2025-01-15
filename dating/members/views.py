@@ -41,7 +41,7 @@ class MembersListView(View, TemplateResponseMixin):
                                         'members': members})
 
 
-class MemberDeatilView(DetailView):
+class MemberDetailView(DetailView):
     template_name = 'members/member/detail.html'
     model = DatingUser
 
