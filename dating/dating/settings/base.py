@@ -16,12 +16,10 @@ from urllib.parse import quote
 from pathlib import Path
 
 
-dotenv.load_dotenv(os.path.join(r'D:\DjangoProjects\Dating-site\.venv', '.env'))
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+dotenv.load_dotenv(os.path.join(BASE_DIR, r'../.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -29,11 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -48,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
     'easy_thumbnails',
     'django_extensions',
 ]
@@ -61,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'dating.urls'
@@ -86,22 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dating.wsgi.application'
 ASGI_APPLICATION = 'dating.asgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dating',
-        'USER': 'dating_suser',
-        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
-        'HOST': '127.0.0.1',
-        'PORT': 5432,
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -157,16 +133,6 @@ AUTH_USER_MODEL = 'accounts.DatingUser'
 MEDIA_URL = '/media/'
 MEDIA_ROOT =  os.path.join(BASE_DIR, "media")
 
-# Email backend
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# iternal ips
-
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
-
 # Login/out auth
 
 LOGIN_REDIRECT_URL = 'user_detail'
@@ -193,5 +159,5 @@ CHANNEL_LAYERS = {
 
 # Celery conf
 
-CELERY_BROKER_URL = f'amqp://suser_rabbitmq:{quote(os.environ['RABBITMQ_PASSWORD'])}@127.0.0.1:5672/'
+CELERY_BROKER_URL = f'amqp://suser_rabbitmq:{quote(os.environ['RABBITMQ_PASSWORD'])}@127.0.0.1:15672/'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True

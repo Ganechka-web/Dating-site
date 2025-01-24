@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
 from .fields import PhoneField
@@ -30,7 +31,12 @@ class DatingUser(AbstractUser):
                                   null=True)
     description = models.TextField(blank=True,
                                    null=True)
-    phone = PhoneField(blank=True, null=True)
+
+    if settings.ENVIRONMENT == 'local':
+        phone = PhoneField(blank=True, null=True, max_length=20)
+    else:
+        phone = PhoneField(blank=True, null=True)
+
     gender = models.CharField(max_length=3,
                               choices=Gender,
                               default=Gender.UNKNOWN)
