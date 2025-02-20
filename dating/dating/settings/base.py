@@ -19,13 +19,13 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-dotenv.load_dotenv(os.path.join(BASE_DIR, r'../.env'))
+dotenv.load_dotenv(os.path.join(BASE_DIR, r'..\.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
 
 ALLOWED_HOSTS = []
 
@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'easy_thumbnails',
-    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -142,11 +141,11 @@ LOGOUT_URL = 'logout'
 
 # Redis / channels
 
-REDIS_HOST = '127.0.0.1'
-REDIS_PORT = 6380
+REDIS_HOST = 'redis'
+REDIS_PORT = 6379
 REDIS_DB = 0
-REDIS_USER = os.environ['REDIS_USER']
-REDIS_USER_PASSWORD = os.environ['REDIS_USER_PASSWORD']
+REDIS_USER = os.environ.get('REDIS_USER', '')
+REDIS_USER_PASSWORD = os.environ.get('REDIS_USER_PASSWORD', '')
 
 CHANNEL_LAYERS = {
     'default': {
@@ -159,5 +158,8 @@ CHANNEL_LAYERS = {
 
 # Celery conf
 
-CELERY_BROKER_URL = f'amqp://suser_rabbitmq:{quote(os.environ['RABBITMQ_PASSWORD'])}@127.0.0.1:15672/'
+CELERY_BROKER_URL = (f'amqp://suser_rabbitmq:{quote(os.environ.get('RABBITMQ_PASSWORD', ''))}'
+                     f'@{os.environ.get('RABBITMQ_HOST')}:5672')
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+ENVIRONMENT = "local"

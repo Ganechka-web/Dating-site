@@ -79,13 +79,13 @@
 
     const data = JSON.parse(event.data);
     const chat = document.getElementById('targetChat');
-    const current_date = new Date(data.sent).toLocaleString('ru');
+    const currentDate = new Date(data.sent).toLocaleString('ru');
     const isMe = data.user_id === member1Id;
     const messageClass = isMe ? 'my-message' : 'other-message';
 
     chat.innerHTML += `<div class="${messageClass}">
                          <span class="badge text-bg-secondary">
-                           ${data.user_username} ${current_date}
+                           ${data.user_username} ${currentDate}
                          </span>
                          <p>
                            ${data.message}

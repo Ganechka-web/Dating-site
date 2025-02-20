@@ -1,0 +1,91 @@
+services:
+  web:
+    build: .
+    container_name: dating-site
+    ports:
+      - "8000:8080"
+    env_file: .env
+    volumes:
+      - ./dating/media/:/app/Dating-site/dating/media/
+    restart: always
+    depends_on:
+      - db
+
+  celery:
+    build: .
+    command: ["celery", "-A", "dating.celery", "worker", "-l", "INFO", "-P", "gevent"]
+    container_name: celery
+    env_file: .env
+    restart: always
+    depends_on:
+      - web
+      - rabbitmq
+
+  db:
+    image: postgres:17.2
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - dating_postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - D:\Docker\Redis\redisdata:/data
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 1024M
+        reservations:
+          cpus: "0.25"
+          memory: 512M
+    command: >
+      sh -c '
+          mkdir -p /usr/local/etc/redis &&
+          echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf &&
+          echo "requirepass $REDIS_PASSWORD" >> /usr/local/etc/redis/redis.conf &&
+          echo "appendonly yes" >> /usr/local/etc/redis/redis.conf &&
+          echo "appendfsync everysec" >> /usr/local/etc/redis/redis.conf &&
+          echo "user default on nopass ~* +@all" > /usr/local/etc/redis/users.acl &&
+          echo "user $REDIS_USER on >$REDIS_USER_PASSWORD ~* +@all" >> /usr/local/etc/redis/users.acl &&
+          redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl
+      '
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "$REDIS_PASSWORD", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    container_name: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit log_levels [{connection,error},{default,error}] disk_free_limit 2147483648
+    volumes:
+      - D:\Docker\RabbitMQ\rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+volumes:
+  dating_postgres_data:
+
