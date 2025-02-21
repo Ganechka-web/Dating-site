@@ -33,15 +33,16 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'daphne',
-    'chats.apps.ChatsConfig',
-    'accounts.apps.AccountsConfig',
-    'members.apps.MembersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'chats.apps.ChatsConfig',
+    'accounts.apps.AccountsConfig',
+    'members.apps.MembersConfig',
+    'ai_date_helper.apps.AiDateHelperConfig',
     'easy_thumbnails',
 ]
 
@@ -163,3 +164,7 @@ CELERY_BROKER_URL = (f'amqp://suser_rabbitmq:{quote(os.environ.get('RABBITMQ_PAS
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 ENVIRONMENT = "local"
+
+# AI helper
+
+OPENROUTER_AUTH_KEY = os.environ.get('OPENROUTER_AUTH_KEY', '')
