@@ -1,7 +1,6 @@
 import os
 import json
 import requests
-import datetime
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -25,8 +24,8 @@ class AiHelper:
     @staticmethod
     def _get_data_from_prompt_file() -> str:
         path_to_file = os.path.join(
-            settings.BASE_DIR, 'ai_helper',
-            'static', 'ai_helper', 'txt',
+            settings.BASE_DIR, 'ai_date_helper',
+            'static', 'ai_date_helper', 'txt',
             'prompt.txt')
         
         with open(path_to_file, 'r', encoding='utf-8') as prompt:
@@ -39,12 +38,12 @@ class AiHelper:
         """
         asker_zodiac = get_user_zodiac_sign(self.asker.date_birth)
         target_zodiac = get_user_zodiac_sign(self.target.date_birth)
-        asker_interests = self.asker.interests.all().join(', ')
-        target_interests = self.target.interests.all().join(', ')
+        asker_interests = ', '.join(self.asker.interests.all())
+        target_interests = ', '.join(self.target.interests.all())
         asker_gender = get_user_clear_gender(self.asker)
         target_gender = get_user_clear_gender(self.target)
 
-        content.format(
+        return content.format(
             asker_username=self.asker.username, asker_gender=asker_gender, 
             asker_zodiac=asker_zodiac, asker_age=self.asker.age, 
             asker_interests=asker_interests, asker_description=self.asker.description, 
@@ -53,8 +52,6 @@ class AiHelper:
             target_zodiac=target_zodiac, target_age=self.target.age, 
             target_interests=target_interests, target_description=self.target.description,
             target_city=self.target.city)
-        
-        return content
     
     @staticmethod
     def _send_request(content: str) -> requests.Response:
@@ -81,6 +78,10 @@ class AiHelper:
 
     def get_helper_answer(self) -> tuple[int, str | None]:
         content = self._get_data_from_prompt_file()
+        content = self._format_content(content)
         response = self._send_request(content)
 
-        # TO DO: implement getting text data from response
+        if response.status_code != 200:
+            return None
+        return response.json()['choices'][0]['message']['content']
+        

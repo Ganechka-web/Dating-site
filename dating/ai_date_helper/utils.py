@@ -21,7 +21,7 @@ ZODIAC_INTERVALS = {
 }
 
 
-def get_user_zodiac_sign(user_data_birth: datetime.Date) -> str:
+def get_user_zodiac_sign(user_data_birth: datetime.date) -> str:
     for interval in ZODIAC_INTERVALS:
         if interval[0] <= user_data_birth <= interval[1]:
             return ZODIAC_INTERVALS[interval]
