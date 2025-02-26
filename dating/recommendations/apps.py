@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AiDateHelperConfig(AppConfig):
+class RecommendationsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'ai_date_helper'
+    name = 'recommendations'

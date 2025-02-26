@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'chats.apps.ChatsConfig',
     'accounts.apps.AccountsConfig',
     'members.apps.MembersConfig',
-    'ai_date_helper.apps.AiDateHelperConfig',
+    'recommendations.apps.RecommendationsConfig',
     'easy_thumbnails',
 ]
 

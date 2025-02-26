@@ -24,8 +24,8 @@ class AiHelper:
     @staticmethod
     def _get_data_from_prompt_file() -> str:
         path_to_file = os.path.join(
-            settings.BASE_DIR, 'ai_date_helper',
-            'static', 'ai_date_helper', 'txt',
+            settings.BASE_DIR, 'recommendations',
+            'static', 'recommendations', 'txt',
             'prompt.txt')
         
         with open(path_to_file, 'r', encoding='utf-8') as prompt:
