@@ -83,57 +83,73 @@
 {% endblock %}
 
 {% block domready %}
-  let cards = document.querySelectorAll('.card');
-  let targetContainer = document.getElementById('container');
+let cards = document.querySelectorAll('.card');
+let targetContainer = document.getElementById('container');
 
-  cards.forEach(card => {
-    let userURL = `{{ protocol }}{{ domain }}/members/${card.dataset.id}/${card.dataset.username}/`
+cards.forEach(card => {
+  let userURL = `{{ protocol }}{{ domain }}/members/${card.dataset.id}/${card.dataset.username}/`
 
-    card.addEventListener('click', (event) => {
-      fetch(userURL)
-      .then(response => response.text())
-      .then(html => {
-        const previousURL = window.location.href;
+  card.addEventListener('click', (event) => {
+    fetch(userURL)
+    .then(response => response.text())
+    .then(html => {
+      const previousURL = window.location.href;
 
-        let parser = new DOMParser();
-        let detailPage = parser.parseFromString(html, 'text/html');
+      let parser = new DOMParser();
+      let detailPage = parser.parseFromString(html, 'text/html');
 
-        // Add possibility to come back to filters
-        let backButton = detailPage.getElementById('backButton');
-        backButton.href = previousURL;
+      // Add possibility to come back to filters
+      let backButton = detailPage.getElementById('backButton');
+      backButton.href = previousURL;
 
-        targetContainer.innerHTML = '';
-        targetContainer.insertAdjacentHTML('beforeEnd', html);
+      targetContainer.innerHTML = '';
+      targetContainer.insertAdjacentHTML('beforeEnd', html);
 
-        console.log('before addEventListener');
-        let chatButton = document.getElementById('chatButton');
-        console.log(chatButton);
-        chatButton.addEventListener('click', (chatEvent) => {
-          console.log('In addEventListener');
-          const createChatURL = '{% url 'chats:create_chat' %}';
-          let options = {
-              method: 'POST',
-              headers: {'X-CSRFToken': csrftoken},
-              mode: 'same-origin'
-          };
+      let chatButton = document.getElementById('chatButton');
+      chatButton.addEventListener('click', (chatEvent) => {
+        const createChatURL = '{% url 'chats:create_chat' %}';
+        let options = {
+            method: 'POST',
+            headers: {'X-CSRFToken': csrftoken},
+            mode: 'same-origin'
+        };
 
-          // create form
-          let createChatForm = new FormData();
-          createChatForm.append('member2_id', card.dataset.id);
-          options['body'] = createChatForm;
+        // create form
+        let createChatForm = new FormData();
+        createChatForm.append('member2_id', card.dataset.id);
+        options['body'] = createChatForm;
 
-          // POST request to create chat
-          fetch(createChatURL, options)
-          .then(response => response.json())
-          .then(data => {
-              if (data['status'] === 'ok') {
-                  window.location.pathname = '{% url 'chats:chats_list' %}'
-              } else if (data['status'] === 'blocked') {
-                  alert('error');
-              }
-          });
+        // POST request to create chat
+        fetch(createChatURL, options)
+        .then(response => response.json())
+        .then(data => {
+            if (data['status'] === 'ok') {
+                window.location.pathname = '{% url 'chats:chats_list' %}'
+            } else if (data['status'] === 'blocked') {
+                alert('error');
+            }
         });
+      });
+
+      // ai info button event
+      let aiInfoSing = document.getElementById('aiInfo');
+      let aiButtonContainer = document.getElementById('aiButtonContainer')
+      let aiInfo = `{% include "members\includes\ai_info.html" %}`;
+      let shown = false;
+
+      aiInfoSing.addEventListener('click', (infoEvent) => {
+        if (shown === false) {
+          aiButtonContainer.insertAdjacentHTML('afterend', aiInfo);
+          shown = true;
+        } else {
+          let aiInfoContent = document.getElementById('aiInfoContent');
+          if (aiInfoContent) {
+            aiInfoContent.remove();
+          }
+          shown = false;
+        }
       });
     });
   });
+});
 {% endblock %} 

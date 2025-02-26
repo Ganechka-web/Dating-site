@@ -14,7 +14,7 @@
           <div class="chat">
             <a href="{% url 'chats:chat_connect' chat.id %}">
               <img src="{% if member2.image %}{% thumbnail member2.image 100x100 %}
-                            {% else %}{% static 'img/default-avatar.jpg' %}{% endif %}"
+                        {% else %}{% static 'img/default-avatar.jpg' %}{% endif %}"
                    class="chat-user-avatar">
             </a>
             <div class="chat-info">
@@ -38,7 +38,10 @@
         {% endwith %}
       {% empty %}
         <p>
-          You haven`t any chats yet. <a href="{% url 'members:members_list' %}" class="dating-link">Fix it!</a>
+          You haven`t got any active chats yet. 
+          <a href="{% url 'members:members_list' %}" class="dating-link">
+            Fix it!
+          </a>
         </p>
       {% endfor %}
     </div>

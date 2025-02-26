@@ -76,7 +76,7 @@ class AiHelper:
 
         return response
 
-    def get_helper_answer(self) -> tuple[int, str | None]:
+    def get_helper_answer(self) -> str | None:
         content = self._get_data_from_prompt_file()
         content = self._format_content(content)
         response = self._send_request(content)

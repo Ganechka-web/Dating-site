@@ -15,13 +15,19 @@ header .logo {
   border-radius: 50%;
   object-fit: cover;
 }
-.navbar {
+
+.dating_navbar {
+  align-self: center;
   width: 100%;
+  height: 90%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   grid-gap: 10px;
 }
-.navbar a {
+
+.dating_navbar a {
   padding: 5px;
   width: 150px;
   height: 2em;
@@ -32,10 +38,12 @@ header .logo {
   text-align: center;
   text-decoration: none;
 }
-.navbar a:hover {
+
+.dating_navbar a:hover {
   color: black;
 }
-.navbar a.selected {
+
+.dating_navbar a.selected {
   background-color: #e72479;
 }
 
@@ -135,6 +143,40 @@ main {
 .back-button:hover {
   color: black;
 }
+
+/* AI */
+
+.ai-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ai-button-container .ai-button {
+  font-size: 28px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  height: 50px;
+  color: white;
+  text-decoration: none;
+  border-radius: 7px;
+  background: linear-gradient(to right, rgb(247, 137, 232), rgb(157, 42, 250));
+}
+
+.ai-button-container .ai-button:hover {
+  color: black
+}
+
+.ai-info-container {
+  padding: 10px;
+  border: 2px solid black;
+  background-color: aliceblue;
+  border-radius: 7px;
+}
+
 .log-in-button {
   display: flex;
   justify-content: center;
