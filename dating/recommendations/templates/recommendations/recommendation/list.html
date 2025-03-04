@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}Recommendations{% endblock %}
+
+{% block content %}
+  <main>
+    <div class="chats_container">
+      <h1>Your recent AI recommendations</h1>
+      <hr>
+      {% for recommendation in recommendations %}
+        <div class="chat">
+          {% with target=recommendation.target %}
+            <a href="#">
+              <img 
+                src="{% if target.image %}{% thumbnail target.image %}{% else %}
+                    {% static 'img/default-avatar.jpg' %}{% endif %}" 
+                alt="Member avatar"
+                class="chat-user-avatar"
+              >
+            </a>
+            <div class="chat-info">
+              <p>{{ recommendation.content|linebreaks:20 }}</p>
+            </div>
+          {% endwith %}
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+{% endblock %}

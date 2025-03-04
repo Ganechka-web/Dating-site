@@ -22,12 +22,14 @@ ZODIAC_INTERVALS = {
 
 
 def get_user_zodiac_sign(user_data_birth: datetime.date) -> str:
+    """Returns user`s zodiac sign according to date_birth"""
     for interval in ZODIAC_INTERVALS:
         if interval[0] <= user_data_birth <= interval[1]:
             return ZODIAC_INTERVALS[interval]
         
         
 def get_user_clear_gender(user: DatingUser) -> str:
+    """Returns user`s gender in simple format"""
     match user.gender:
         case 'ML':
             return 'мужской'

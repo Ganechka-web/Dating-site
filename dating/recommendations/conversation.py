@@ -18,11 +18,16 @@ class AiHelper:
     communications with another user.
     """
     def __init__(self, asker: DatingUser, target: DatingUser) -> None:
+        """
+        asker: user who need help
+        target: user who will be analyzed 
+        """
         self.asker = asker
         self.target = target
     
     @staticmethod
     def _get_data_from_prompt_file() -> str:
+        """Opens prompt file and returns content from it"""
         path_to_file = os.path.join(
             settings.BASE_DIR, 'recommendations',
             'static', 'recommendations', 'txt',
@@ -34,7 +39,7 @@ class AiHelper:
         
     def _format_content(self, content: str) -> str:
         """
-        This method creates and formats data to content and returns it
+        Creates and formats data to content and returns it
         """
         asker_zodiac = get_user_zodiac_sign(self.asker.date_birth)
         target_zodiac = get_user_zodiac_sign(self.target.date_birth)
@@ -56,7 +61,7 @@ class AiHelper:
     @staticmethod
     def _send_request(content: str) -> requests.Response:
         """
-        This method sends request to AI API and returns response 
+        Sends request to AI API and returns response 
         """
         response = requests.post(
             url='https://openrouter.ai/api/v1/chat/completions',
@@ -73,10 +78,10 @@ class AiHelper:
                 ]
             })
         )
-
         return response
 
     def get_helper_answer(self) -> str | None:
+        """Receives text answer from API response"""
         content = self._get_data_from_prompt_file()
         content = self._format_content(content)
         response = self._send_request(content)
