@@ -55,13 +55,7 @@
   {% block include_js %}
   {% endblock %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
-  <script>
-    const csrftoken = Cookies.get('csrftoken');
-
-    document.addEventListener('DOMContentLoaded', (event) => {
-      {% block domready %}
-      {% endblock %}
-    });
-  </script>
+  {% block domready %}
+  {% endblock %}
 </body>
 </html>

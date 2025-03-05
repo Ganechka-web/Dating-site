@@ -42,6 +42,7 @@ class MembersListView(View, TemplateResponseMixin):
 
 
 class MemberDetailView(DetailView):
+    """Sends html template of detail userpage to js fetch"""
     template_name = 'members/member/detail.html'
     model = DatingUser
 

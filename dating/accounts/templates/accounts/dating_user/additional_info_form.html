@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Add information{% endblock %}
 
@@ -24,13 +25,13 @@
               <select class="form-select form-select-lg mb-3"
                       name="{{ field.name }}"
                       id="{{ field.auto_id }}">
-              {% for value, label in field.field.choices %}
-                <option value="{{ value }}"
-                        {% if value == field.value %}selected{% endif %}>
-                {{ label }}
-              </option>
-              {% endfor %}
-            </select>
+                {% for value, label in field.field.choices %}
+                  <option value="{{ value }}"
+                          {% if value == field.value %}selected{% endif %}>
+                  {{ label }}
+                </option>
+                {% endfor %}
+              </select>
             {% else %}
               <label for="{{ field.auto_id }}">{{ field.name }}</label>
               {{ field }}
@@ -51,12 +52,5 @@
 {% endblock %}
 
 {% block domready %}
-  let targetImageInput = document.getElementById('targetImageInput');
-  let targetImageImg = document.getElementById('targetImageImg');
-
-  targetImageInput.addEventListener('input', function(inputEvent) {
-    let value = URL.createObjectURL(targetImageInput.files[0]);
-    targetImageImg.src = value;
-    targetImageImg.onload = () => URL.revokeObjectURL(value);
-  });
+  <script src="{% static 'accounts/js/change_image.js' %}"></script>
 {% endblock %}
