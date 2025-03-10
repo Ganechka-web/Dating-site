@@ -21,10 +21,24 @@ ZODIAC_INTERVALS = {
 }
 
 
-def get_user_zodiac_sign(user_data_birth: datetime.date) -> str:
+def compare_date_with_interval_without_year(user_date_birth: datetime.date,
+                                            interval: tuple[datetime.date, 
+                                                            datetime.date]) -> bool:
+    left_date = interval[0].month, interval[0].day
+    right_date = interval[1].month, interval[1].day
+    middle_date = user_date_birth.month, user_date_birth.day
+    
+    if left_date < right_date:
+        return left_date <= middle_date <= right_date
+    else: 
+        return left_date <= middle_date or middle_date <= right_date
+
+
+def get_user_zodiac_sign(user_date_birth: datetime.date) -> str:
     """Returns user`s zodiac sign according to date_birth"""
     for interval in ZODIAC_INTERVALS:
-        if interval[0] <= user_data_birth <= interval[1]:
+        if compare_date_with_interval_without_year(user_date_birth,
+                                                   interval):
             return ZODIAC_INTERVALS[interval]
         
         

@@ -3,8 +3,9 @@ from django.db import models
 
 class Recommendation(models.Model):
     """
-    Describes AI recommendation with user (target) 
+    Keeps AI recommendation with user (target) 
     """
+    # user was compared with current user 
     target = models.ForeignKey('accounts.DatingUser',
                                on_delete=models.CASCADE,
                                related_name='recommendations')

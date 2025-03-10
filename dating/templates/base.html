@@ -35,7 +35,7 @@
            {% if section == 'chats' %}class="selected"{% endif %}>
           Chats
         </a>
-        <a href="" 
+        <a href="{% url 'recommendations:list' %}" 
         {% if section == 'recommendations' %}class="selected"{% endif %}>
           Recommendations
         </a>

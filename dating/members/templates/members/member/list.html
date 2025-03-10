@@ -59,7 +59,10 @@
         {% for member in members %}
           <div class="col">
             <div class="card" style="width: 18rem; cursor: pointer;"
-                 data-url="{% url 'members:member_detail' member.id member.username %}">
+                 data-url="{% url 'members:member_detail' member.id member.username %}"
+                 data-create-recommendation-url="{% url 'recommendations:create' %}"
+                 data-member-id="{{ member.id }}"
+            >
               <img
                 src="{% if member.image %}{% thumbnail member.image 250x250 %}
                      {% else %}{% static 'img/default-avatar.jpg' %}{% endif %}"

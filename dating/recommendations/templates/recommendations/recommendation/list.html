@@ -14,7 +14,7 @@
           {% with target=recommendation.target %}
             <a href="#">
               <img 
-                src="{% if target.image %}{% thumbnail target.image %}{% else %}
+                src="{% if target.image %}{% thumbnail target.image 100x100 %}{% else %}
                     {% static 'img/default-avatar.jpg' %}{% endif %}" 
                 alt="Member avatar"
                 class="chat-user-avatar"
