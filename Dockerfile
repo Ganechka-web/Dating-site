@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-alpine
 
 WORKDIR app/
 COPY . .
@@ -6,7 +6,7 @@ COPY . .
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-RUN apt update &&  apt upgrade -y && apt install -y libpq-dev && rm -rf /var/cache/apk/
+RUN apk update &&  apk upgrade && apk add libpq-dev && rm -rf /var/cache/apk/
 RUN python3 -m pip install --upgrade pip \
     && python3 -m pip install -r requirements.txt
 
