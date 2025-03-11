@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load thumbnail %}
+{% load recommendations_tags %}
 
 {% block title %}Recommendations{% endblock %}
 
@@ -12,7 +13,7 @@
       {% for recommendation in recommendations %}
         <div class="chat">
           {% with target=recommendation.target %}
-            <a href="#">
+            <a href="{% url 'recommendations:detail' pk=recommendation.id %}">
               <img 
                 src="{% if target.image %}{% thumbnail target.image 100x100 %}{% else %}
                     {% static 'img/default-avatar.jpg' %}{% endif %}" 
@@ -21,7 +22,7 @@
               >
             </a>
             <div class="chat-info">
-              <p>{{ recommendation.content|linebreaks:20 }}</p>
+              <p>{{ recommendation.content|truncatechars:60|linebreaks }}</p>
             </div>
           {% endwith %}
         </div>

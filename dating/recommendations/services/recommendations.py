@@ -9,14 +9,18 @@ DatingUser = get_user_model()
 
 
 def create_recommendation(asker_id: int, target_id: int): 
-    """Creates recommendation according to two users from db"""
+    """
+    Creates recommendation according to two users from db
+    and adds it to foreign key   
+    """
     asker = DatingUser.objects.get(id=asker_id)
     target = DatingUser.objects.get(id=target_id)
 
     helper = AiHelper(asker, target)
     answer = helper.get_helper_answer()
 
-    Recommendation.objects.create(target=target,
+    Recommendation.objects.create(asker=asker,
+                                  target=target,
                                   content=answer,
                                   asked=timezone.now())
     

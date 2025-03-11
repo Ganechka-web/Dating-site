@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load recommendations_tags %}
+
+{% block title %}
+    Recommendation with {{ recommendation.target.username }}
+{% endblock %}
+
+{% block content %}
+  <main>
+    <div class="container"><br>
+      <p>{{ recommendation.content|markdown|linebreaks }}</p>
+      <span class="badge bg-dark">{{ recommendation.asked }}</span>
+    </div>
+  </main>
+{% endblock %}
