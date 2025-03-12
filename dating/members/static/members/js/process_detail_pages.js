@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 // Creation chat with current member
                 let chatButton = document.getElementById('chatButton');
                 chatButton.addEventListener('click', (chatEvent) => {
-                    const createChatURL = chatButton.dataset.createURL;
+                    const createChatURL = chatButton.dataset.createUrl;
 
                     let createChatForm = new FormData();
                     createChatForm.append('member2_id', card.dataset.memberId);
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     .then(response => response.json())
                     .then(data => {
                         if (data['status'] === 'ok') {
-                            window.location.pathname = chatButton.listURL
+                            chatButton.dataset.chatUrl
                         } else if (data['status'] === 'blocked') {
                             alert('error');
                         }
@@ -79,7 +79,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     .then(response => response.json())
                     .then(data => {
                         if (data['status'] === 'ok') {
-                            alert('in process')
                         } else {
                             // implementation recommendation count in future
                         }
