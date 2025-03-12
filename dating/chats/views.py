@@ -6,28 +6,21 @@ from django.http import JsonResponse
 
 from .forms import CreateChatForm, SaveMessageForm
 from .models import Chat
-from .tasks import save_message
+from .tasks import process_chat, process_message
 
 
 DatingUser = get_user_model()
 
 
 class CreateChatView(View):
+    """Received form from js, sets off celery task"""
     def post(self, request):
         form = CreateChatForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
 
-            member2 = DatingUser.objects.get(id=cd['member2_id'])
-            chats_members_ids_for_cur_user = [
-                member.id
-                for chat in Chat.objects.filter(members__in=[request.user.id])
-                for member in chat.members.exclude(id=request.user.id)
-            ]
-
-            if member2.id not in chats_members_ids_for_cur_user:
-                new_chat = Chat.objects.create()
-                new_chat.members.add(request.user, member2)
+            process_chat.delay(cur_user_id=request.user.id,
+                               second_user_id=cd['member2_id'])
 
             return JsonResponse({'status': 'ok'})
         return JsonResponse({'status': 'error'})
@@ -69,9 +62,9 @@ def message_save(request) -> JsonResponse:
     if form.is_valid():
         cd = form.cleaned_data
 
-        save_message.delay(request.user.id,
-                           cd['chat_id'],
-                           cd['content'])
+        process_message.delay(request.user.id,
+                              cd['chat_id'],
+                              cd['content'])
 
         return JsonResponse({'status': 'saved'})
     return JsonResponse({'status': 'error'})

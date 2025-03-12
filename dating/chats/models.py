@@ -15,14 +15,6 @@ class Chat(models.Model):
                           editable=False)
     members = models.ManyToManyField(DatingUser,
                                      related_name='chats')
-    # member1 = models.ForeignKey(DatingUser,
-    #                             related_name='member1_groups',
-    #                             null=True,
-    #                             on_delete=models.SET_NULL)
-    # member2 = models.ForeignKey(DatingUser,
-    #                             related_name='member2_groups',
-    #                             null=True,
-    #                             on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'Chat {self.id}'
