@@ -43,8 +43,8 @@ class AiHelper:
         """
         asker_zodiac = get_user_zodiac_sign(self.asker.date_birth)
         target_zodiac = get_user_zodiac_sign(self.target.date_birth)
-        asker_interests = ', '.join(self.asker.interests.all())
-        target_interests = ', '.join(self.target.interests.all())
+        asker_interests = ', '.join(self.asker.interests.values_list('name', flat=True))
+        target_interests = ', '.join(self.target.interests.values_list('name', flat=True))
         asker_gender = get_user_clear_gender(self.asker)
         target_gender = get_user_clear_gender(self.target)
 
