@@ -85,7 +85,7 @@ class DatingUserLogoutView(View):
         return redirect('login')
 
 
-@cache_page(60 * 10)
+@method_decorator(cache_page(60 * 60), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class DatingUserDetailView(DetailView):
     template_name = 'accounts/dating_user/profile.html'
