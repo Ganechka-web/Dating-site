@@ -22,6 +22,13 @@ def create_recommendation(request: HttpRequest) -> JsonResponse:
         
         process_recommendation.delay(asker_id=request.user.id,
                                      target_id=cd['target_id'])
+        
+        # delete old cache data
+        user_recommendations_key = 'recommendations:user:{}' \
+                                   .format(request.user.id)
+        user_recommendations = cache.get(user_recommendations_key)
+        if user_recommendations:
+            cache.delete(user_recommendations_key)
 
         return JsonResponse({'status': 'ok'})
     return JsonResponse({'status': 'error'})
