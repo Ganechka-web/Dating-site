@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, \
                                 get_user_model, logout
+from django.views.decorators.cache import cache_page
 from django.shortcuts import redirect
 from django.views import View
 
@@ -84,6 +85,7 @@ class DatingUserLogoutView(View):
         return redirect('login')
 
 
+@cache_page(60 * 10)
 @method_decorator(login_required, name='dispatch')
 class DatingUserDetailView(DetailView):
     template_name = 'accounts/dating_user/profile.html'

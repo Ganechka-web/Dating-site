@@ -147,14 +147,24 @@ REDIS_PORT = 6379
 REDIS_DB = 0
 REDIS_USER = os.environ.get('REDIS_USER', '')
 REDIS_USER_PASSWORD = os.environ.get('REDIS_USER_PASSWORD', '')
+REDIS_CONN_STRING = f'redis://{REDIS_USER}:{quote(REDIS_USER_PASSWORD)}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [f'redis://{REDIS_USER}:{quote(REDIS_USER_PASSWORD)}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'],
+            'hosts': [REDIS_CONN_STRING],
         },
     },
+}
+
+# Redis cache
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': REDIS_CONN_STRING,
+    }
 }
 
 # Celery conf

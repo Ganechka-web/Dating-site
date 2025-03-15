@@ -3,7 +3,11 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse, HttpRequest
+from django.db.models import QuerySet
+from django.core.cache import cache
 
+from recommendations.services.recommendations import \
+    get_user_recommendations
 from .forms import CreateRecommendationForm
 from .tasks import process_recommendation
 from .models import Recommendation
@@ -36,9 +40,21 @@ class RecommendationsListView(ListView):
         return context
     
     def get_queryset(self):
-        return super().get_queryset() \
-                      .filter(asker__id=self.request.user.id) \
-                      .select_related('target')
+        user_recommendations: QuerySet
+
+        user_recommendations_key = 'recommendations:user:{}' \
+                                   .format(self.request.user.id)
+        user_recommendations = cache.get(user_recommendations_key)
+        if user_recommendations:
+            return user_recommendations
+        
+        user_recommendations = get_user_recommendations(
+            super().get_queryset(),
+            self.request.user.id)
+        cache.set(user_recommendations_key, user_recommendations, 
+                    timeout=60*10)
+            
+        return user_recommendations
     
 
 @method_decorator(decorator=login_required, name='dispatch')
@@ -52,3 +68,17 @@ class RecommendationsDetailView(DetailView):
         context['section'] = 'recommendations'
 
         return context
+    
+    def get_object(self, queryset = ...):
+        user_recommendation: Recommendation
+        pk = self.kwargs[self.pk_url_kwarg]
+
+        user_recommendation_key = 'recommendation:user:{}'.format(pk)
+        user_recommendation = cache.get(user_recommendation_key)
+        if user_recommendation:
+            return user_recommendation
+        
+        user_recommendation = queryset.get(pk=pk)
+        cache.set(user_recommendation_key, user_recommendation,
+                  timeout=60*5)
+        
