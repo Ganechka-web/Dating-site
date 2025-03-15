@@ -52,14 +52,12 @@ class RecommendationsListView(ListView):
         user_recommendations_key = 'recommendations:user:{}' \
                                    .format(self.request.user.id)
         user_recommendations = cache.get(user_recommendations_key)
-        if user_recommendations:
-            return user_recommendations
-        
-        user_recommendations = get_user_recommendations(
-            super().get_queryset(),
-            self.request.user.id)
-        cache.set(user_recommendations_key, user_recommendations, 
-                    timeout=60*10)
+        if user_recommendations is None:
+            user_recommendations = get_user_recommendations(
+                super().get_queryset(),
+                self.request.user.id)
+            cache.set(user_recommendations_key, user_recommendations, 
+                        timeout=60*10)
             
         return user_recommendations
     
@@ -82,10 +80,10 @@ class RecommendationsDetailView(DetailView):
 
         user_recommendation_key = 'recommendation:user:{}'.format(pk)
         user_recommendation = cache.get(user_recommendation_key)
-        if user_recommendation:
-            return user_recommendation
+        if user_recommendation is None:
+            user_recommendation = queryset.get(pk=pk)
+            cache.set(user_recommendation_key, user_recommendation,
+                    timeout=60*5)
         
-        user_recommendation = queryset.get(pk=pk)
-        cache.set(user_recommendation_key, user_recommendation,
-                  timeout=60*5)
-        
+        return user_recommendation
+            

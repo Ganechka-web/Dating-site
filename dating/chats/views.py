@@ -2,7 +2,9 @@ from django.views.decorators.http import require_POST
 from django.views.generic.base import View, TemplateResponseMixin
 from django.views.generic import ListView
 from django.contrib.auth import get_user_model
+from django.db.models import QuerySet
 from django.http import JsonResponse
+from django.core.cache import cache
 
 from .forms import CreateChatForm, SaveMessageForm
 from .models import Chat
@@ -39,7 +41,16 @@ class ChatsListView(ListView):
         return context
 
     def get_queryset(self):
-        return self.model.objects.filter(members__in=[self.request.user])
+        chats: QuerySet[Chat]
+
+        chats_key = 'chats:user:{}'.format(self.request.user.id)
+        chats = cache.get(chats_key)
+        if chats is None:
+            chats = self.model.objects \
+                .filter(members__in=[self.request.user])
+            cache.set(chats_key, chats, timeout=60)
+
+        return chats
 
 
 class ChatConnectDetailView(View, TemplateResponseMixin):

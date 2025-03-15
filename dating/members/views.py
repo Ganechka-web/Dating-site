@@ -25,23 +25,19 @@ class MembersListView(View, TemplateResponseMixin):
         members: QuerySet
 
         members_key: str = "members:exclude:{}".format(request.user.id)
-        if cache.get(members_key):
-            members = cache.get(members_key)
-        else:
+        members = cache.get(members_key)
+        if members is None:
             members = get_members_without_cur_user(request.user.id)
             cache.set(members_key, members, timeout=60*10)
 
         if request.GET:
+            # get cache from url parms
             members_filter_key = request.GET.urlencode()
-            if cache.get(members_filter_key):
-                members = cache.get(members_filter_key)
-            else: 
+            members = cache.get(members_filter_key) 
+            if members is None:
                 members = filter_members(members, request.GET)
                 cache.set(members_filter_key, members, timeout=60*5)
 
-            return self.render_to_response({'section': 'members',
-                                            'filter_form': form,
-                                            'members': members})
         return self.render_to_response({'section': 'members',
                                         'filter_form': form,
                                         'members': members})
@@ -64,10 +60,9 @@ class MemberDetailView(DetailView):
 
         member_key = 'member:{}'.format(pk)
         member = cache.get(member_key)
-        if member:
-            return member
-        
-        member = queryset.get(pk=pk)
-        cache.set(member_key, member, 60*10)
+        if member is None:
+            member = queryset.get(pk=pk)
+            cache.set(member_key, member, 60*10)
 
         return member
+    
