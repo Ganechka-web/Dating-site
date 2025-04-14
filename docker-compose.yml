@@ -6,7 +6,7 @@ services:
       - "8000:8080"
     env_file: .env
     volumes:
-      - ./dating/media/:/app/Dating-site/dating/media/
+      - ./dating/media/:/app/dating/media/
     restart: always
     depends_on:
       - db
@@ -86,6 +86,17 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports: 
+      - "8090:8080"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf 
+      - ./staticfiles:/staticfiles
+      - ./dating/media:/media
 volumes:
   dating_postgres_data:
 

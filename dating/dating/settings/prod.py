@@ -5,13 +5,15 @@ from .base import *
 
 ENVIRONMENT = 'prod'
 
-DEBUG = True
+DEBUG = False
 
 ADMINS = [
     ("Maksim S", os.environ.get('ADMIN_EMAIL'))
 ]
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', 'dating-site.com', 'localhost']
+
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8090']
 
 DATABASES = {
      'default': {

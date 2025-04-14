@@ -83,7 +83,7 @@ class RecommendationsDetailView(DetailView):
         if user_recommendation is None:
             user_recommendation = queryset.get(pk=pk)
             cache.set(user_recommendation_key, user_recommendation,
-                    timeout=60*5)
+                      timeout=60*5)
         
         return user_recommendation
             

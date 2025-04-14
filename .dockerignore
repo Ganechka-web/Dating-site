@@ -1,9 +1,17 @@
-.idea
-.venv
+.idea/
+.venv/
+venv/
+nginx/
 __pycache__/
 *.py[cod]
 .gitignore
 
-readme_images
+
+readme_images/
 README.md
 dating_dump.sql
+db.sqlite3
+.env
+
+static/
+staticfiles/
