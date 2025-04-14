@@ -88,13 +88,12 @@ services:
       - "5672:5672"
 
   nginx:
-    image: nginx:latest
+    build: ./nginx
     container_name: nginx
     restart: always
     ports: 
       - "8090:8080"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf 
       - ./staticfiles:/staticfiles
       - ./dating/media:/media
 volumes:
