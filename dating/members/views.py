@@ -54,9 +54,12 @@ class MemberDetailView(DetailView):
 
         return context
     
-    def get_object(self, queryset = ...):
+    def get_object(self, queryset: QuerySet | None) -> DatingUser:
         member: DatingUser
         pk = self.kwargs.get(self.pk_url_kwarg)
+
+        if queryset is None:
+            queryset = self.get_queryset()
 
         member_key = 'member:{}'.format(pk)
         member = cache.get(member_key)
