@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse, HttpRequest
 from django.db.models import QuerySet
+from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
 from recommendations.services.recommendations import \
@@ -63,6 +64,7 @@ class RecommendationsListView(ListView):
     
 
 @method_decorator(decorator=login_required, name='dispatch')
+@method_decorator(cache_page(60 * 100), name='dispatch')
 class RecommendationsDetailView(DetailView):
     template_name = 'recommendations/recommendation/detail.html'
     model = Recommendation
@@ -73,17 +75,4 @@ class RecommendationsDetailView(DetailView):
         context['section'] = 'recommendations'
 
         return context
-    
-    def get_object(self, queryset = ...):
-        user_recommendation: Recommendation
-        pk = self.kwargs[self.pk_url_kwarg]
-
-        user_recommendation_key = 'recommendation:user:{}'.format(pk)
-        user_recommendation = cache.get(user_recommendation_key)
-        if user_recommendation is None:
-            user_recommendation = queryset.get(pk=pk)
-            cache.set(user_recommendation_key, user_recommendation,
-                      timeout=60*5)
-        
-        return user_recommendation
             
