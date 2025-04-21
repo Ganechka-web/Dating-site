@@ -26,7 +26,7 @@ def create_recommendation(asker_id: int, target_id: int) -> None:
                                   asked=timezone.now())
     
 
-def get_user_recommendations(base_queryset: QuerySet, 
-                              cur_user_id: int) -> QuerySet:
-    return base_queryset.filter(id=cur_user_id) \
+def get_user_recommendations(base_queryset: QuerySet[Recommendation], 
+                              cur_user_id: int) -> QuerySet[Recommendation]:
+    return base_queryset.filter(asker__id=cur_user_id) \
                         .select_related('target')

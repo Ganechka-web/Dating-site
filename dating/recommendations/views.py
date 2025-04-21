@@ -47,7 +47,7 @@ class RecommendationsListView(ListView):
         return context
     
     def get_queryset(self):
-        user_recommendations: QuerySet
+        user_recommendations: QuerySet[Recommendation]
 
         user_recommendations_key = 'recommendations:user:{}' \
                                    .format(self.request.user.id)
@@ -57,7 +57,7 @@ class RecommendationsListView(ListView):
                 super().get_queryset(),
                 self.request.user.id)
             cache.set(user_recommendations_key, user_recommendations, 
-                        timeout=60*10)
+                      timeout=60*10)
             
         return user_recommendations
     
