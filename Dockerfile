@@ -14,6 +14,4 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip \
 
 WORKDIR /app/dating/
 
-EXPOSE 8080
-
-CMD ["python3","manage.py","runserver","0.0.0.0:8080","--settings=dating.settings.prod"]
+CMD ["gunicorn","--bind","0.0.0.0:8080","dating.wsgi:application"]

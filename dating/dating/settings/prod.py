@@ -5,7 +5,7 @@ from .base import *
 
 ENVIRONMENT = 'prod'
 
-DEBUG = False
+DEBUG = True
 
 ADMINS = [
     ("Maksim S", os.environ.get('ADMIN_EMAIL'))
