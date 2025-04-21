@@ -31,7 +31,7 @@ class MembersListView(View, TemplateResponseMixin):
             cache.set(members_key, members, timeout=60*10)
 
         if request.GET:
-            # get cache from url parms
+            # get cache key according to url parms
             members_filter_key = request.GET.urlencode()
             members = cache.get(members_filter_key) 
             if members is None:
@@ -43,6 +43,7 @@ class MembersListView(View, TemplateResponseMixin):
                                         'members': members})
 
 
+method_decorator(cache_page(60 * 10), name='dispatch')
 class MemberDetailView(DetailView):
     """Sends html template of detail user page to js fetch"""
     template_name = 'members/member/detail.html'
@@ -53,19 +54,3 @@ class MemberDetailView(DetailView):
         context['section'] = 'members'
 
         return context
-    
-    def get_object(self, queryset: QuerySet | None) -> DatingUser:
-        member: DatingUser
-        pk = self.kwargs.get(self.pk_url_kwarg)
-
-        if queryset is None:
-            queryset = self.get_queryset()
-
-        member_key = 'member:{}'.format(pk)
-        member = cache.get(member_key)
-        if member is None:
-            member = queryset.get(pk=pk)
-            cache.set(member_key, member, 60*10)
-
-        return member
-    
